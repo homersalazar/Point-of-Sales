@@ -1,0 +1,124 @@
+/* ── Sidebar width transition ── */
+.sidebar {
+    width: 256px;
+    min-width: 256px;
+    transition: width 0.3s cubic-bezier(0.4,0,0.2,1),
+                min-width 0.3s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
+}
+.sidebar.collapsed { width: 68px; min-width: 68px; }
+
+/* ── Labels / badges hide ── */
+.nav-label, .nav-badge, .user-info {
+    opacity: 1;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.15s ease, max-width 0.3s ease;
+}
+.sidebar.collapsed .nav-label,
+.sidebar.collapsed .nav-badge,
+.sidebar.collapsed .user-info {
+    opacity: 0;
+    max-width: 0;
+    pointer-events: none;
+}
+
+/* ── Caret ── */
+.caret-icon {
+    flex-shrink: 0;
+    font-size: 11px;
+    transition: opacity 0.15s ease, transform 0.25s ease;
+}
+.sidebar.collapsed .caret-icon { opacity: 0; pointer-events: none; }
+.caret-icon.open { transform: rotate(180deg); }
+
+/* ── Submenus ── */
+.submenu {
+    overflow: hidden;
+    max-height: 300px;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+}
+.submenu.closed { max-height: 0; opacity: 0; }
+.sidebar.collapsed .submenu { max-height: 0 !important; opacity: 0 !important; }
+
+/* ── Nav items ── */
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: var(--rounded-btn, 0.5rem);
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+    position: relative;
+    white-space: nowrap;
+    color: oklch(var(--bc));
+}
+.nav-item:hover {
+    background-color: oklch(var(--b2));
+}
+.nav-item.active {
+    background-color: oklch(var(--p) / 0.1);
+    color: oklch(var(--p));
+}
+.nav-item.active .nav-icon {
+    color: oklch(var(--p)) !important;
+}
+
+.nav-icon {
+    flex-shrink: 0;
+    font-size: 15px;
+    width: 18px;
+    text-align: center;
+    color: oklch(var(--bc) / 0.4);
+}
+
+/* ── Centered when collapsed ── */
+.sidebar.collapsed .nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 0;
+}
+
+.sidebar.collapsed .nav-item > *:not(.nav-icon) {
+    display: none;
+}
+
+/* ── Tooltip ── */
+.sidebar.collapsed .nav-item::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: oklch(var(--n));
+    color: oklch(var(--nc));
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: var(--rounded-badge, 1rem);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 99;
+}
+.sidebar.collapsed .nav-item:hover::after { opacity: 1; }
+
+/* ── Toggle button rotation ── */
+.toggle-btn { transition: transform 0.3s ease; }
+.sidebar.collapsed .toggle-btn { transform: rotate(180deg); }
+
+/* ── Logo text hide ── */
+.logo-text {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 160px;
+    opacity: 1;
+    transition: opacity 0.15s ease, max-width 0.3s ease;
+}
+.sidebar.collapsed .logo-text { opacity: 0; max-width: 0; }
