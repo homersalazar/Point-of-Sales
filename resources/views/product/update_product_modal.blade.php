@@ -1,24 +1,29 @@
 <x-modal
-    id="add_product"
-    title="Add Product"
+    id="update_product_modal"
+    title="Update Product"
     :buttons="[
         [
-            'label' => 'Save',
+            'label' => 'Update',
             'type' => 'submit',
-            'color' => 'success',
-            'form' => 'addProductForm'
+            'color' => 'warning',
+            'form' => 'updateProductForm'
         ]
     ]"
 >
-    <form action="{{ route('product.create_product') }}" method="POST" enctype="multipart/form-data" class="space-y-2" id="addProductForm">
+    <form method="POST" enctype="multipart/form-data" class="space-y-2" id="updateProductForm">
         @csrf
+        @method('PUT')
+        <div class="flex justify-center">
+            <img id="current_image" class="mask mask-squircle h-24 w-24" src="" alt="No image">
+
+        </div>
 
         {{-- Category --}}
         <div>
             <label class="label">
                 <span class="label-text">Category</span>
             </label>
-            <x-select name="category_id" size="sm" caption="Select Category" >
+            <x-select id="category_id" name="category_id" size="sm" >
                 @foreach ($categories as $row)
                     <option value="{{ $row->id }}">{{ $row->name }}</option>
                 @endforeach
@@ -31,6 +36,7 @@
                 <span class="label-text">Product Name</span>
             </label>
             <x-text-input
+                id="name"
                 name="name"
                 size="sm"
                 placeholder="Enter product name"
@@ -46,6 +52,7 @@
                     <span class="label-text">Cost Price</span>
                 </label>
                 <x-text-input
+                    id="cost_price"
                     name="cost_price"
                     type="number"
                     step="0.01"
@@ -60,6 +67,7 @@
                     <span class="label-text">Selling Price</span>
                 </label>
                 <x-text-input
+                    id="selling_price"
                     name="selling_price"
                     type="number"
                     step="0.01"
@@ -77,6 +85,7 @@
                 <span class="label-text">Stock</span>
             </label>
             <x-text-input
+                id="stock"
                 name="stock"
                 type="number"
                 placeholder="0"
@@ -91,9 +100,11 @@
                 <span class="label-text">Product Image</span>
             </label>
             <x-file-input
+                id="image"
                 name="image"
                 size="sm"
             />
         </div>
+
     </form>
 </x-modal>
