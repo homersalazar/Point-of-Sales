@@ -76,10 +76,10 @@
                         <i class="fa-solid fa-chevron-down caret-icon open text-base-content/30" id="caret-sales"></i>
                     </div>
                     <div id="submenu-sales" class="submenu pl-3 mt-0.5 space-y-0.5">
-                        <div class="nav-item" data-tip="Sales Transaction">
+                        <a href="/sale" class="nav-item" data-tip="Sales Transaction">
                             <i class="fa-solid fa-cart-shopping nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Sales Transaction</span>
-                        </div>
+                        </a>
                         <div class="nav-item" data-tip="Sales Orders">
                             <i class="fa-solid fa-clipboard-list nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Sales Orders</span>

@@ -68,7 +68,6 @@ class ProductController extends Controller
                 // Add filename to validated data
                 $validated['image'] = $filename;
             }
-            $validated['sku'] = 'SKU' . date('YmdHis');            // Store product in database
             $this->productService->store($validated);
 
             return redirect()->back()->with('success', 'Product created successfully.');

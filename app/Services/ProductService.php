@@ -3,9 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\ProductRepository;
-use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ProductService extends BaseService
 {
@@ -14,5 +11,11 @@ class ProductService extends BaseService
     public function __construct(ProductRepository $productRepo)
     {
         parent::__construct($productRepo);
+    }
+
+    public function store(array $data)
+    {
+        $data['sku'] = 'SKU' . now()->format('YmdHis');
+        return parent::store($data);
     }
 }

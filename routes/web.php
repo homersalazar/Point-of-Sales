@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,4 +32,9 @@ Route::prefix('category')->group(function () {
     Route::post('/create_category', [CategoryController::class, 'create_category'])->name('category.create_category');
     Route::put('/update_category/{id}', [CategoryController::class, 'update_category'])->name('category.update_category');
     Route::delete('/delete_category/{id}', [CategoryController::class, 'delete_category'])->name('category.delete_category');
+});
+
+
+Route::prefix('sale')->group(function () {
+    Route::get('/', [SaleController::class, 'sales_transaction'])->name('sale.sales_transaction');
 });
