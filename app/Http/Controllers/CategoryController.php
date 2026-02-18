@@ -30,7 +30,7 @@ class CategoryController extends Controller
             $categories = $this->categoryService->search($search, $perPage);
         } else {
             // No search, return all categories
-            $categories = Category::paginate($perPage);
+            $categories = Category::orderBy('name', 'asc')->paginate($perPage);
         }
 
         if ($request->ajax()) {
@@ -44,12 +44,66 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
         ]);
 
         try {
             $this->categoryService->store($validated);
             return redirect()->back()->with('success', 'Category created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Something went wrong. Please try again later.'
+            ]);
+        }
+    }
+
+    public function update_category(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        try {
+            $category = $this->categoryService->show($id);
+
+            $changes = [];
+            foreach ($validated as $key => $value) {
+                if ($category->$key != $value) {
+                    $changes[$key] = $value;
+                }
+            }
+
+            if (!empty($changes)) {
+                $this->categoryService->update($changes, $id);
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Category updated successfully.'
+                ];
+            } else {
+                $response = [
+                    'status' => 'info',
+                    'message' => 'No changes were made.'
+                ];
+            }
+
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong.'
+            ], 500);
+        }
+    }
+
+    public function delete_category($id)
+    {
+        try {
+            $this->categoryService->delete($id);
+            $response = [
+                'status' => 'success',
+                'message' => 'Category deleted successfully.'
+            ];
+            return response()->json($response, 200);
         } catch (\Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => 'Something went wrong. Please try again later.'

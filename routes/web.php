@@ -26,4 +26,6 @@ Route::prefix('product')->group(function () {
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');
     Route::post('/create_category', [CategoryController::class, 'create_category'])->name('category.create_category');
+    Route::put('/update_category/{id}', [CategoryController::class, 'update_category'])->name('category.update_category');
+    Route::delete('/delete_category/{id}', [CategoryController::class, 'delete_category'])->name('category.delete_category');
 });

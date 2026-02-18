@@ -2,6 +2,7 @@
 
 @section('content')
     @include('category.create_category_modal')
+    @include('category.update_category_modal')
 
     <div class="flex flex-col w-full space-y-6">
 
@@ -34,7 +35,7 @@
                 <x-button
                     color="primary"
                     icon="fa-solid fa-plus"
-                    onclick="add_category"
+                    click="add_category"
                 >
                 Add Category
             </x-button>
@@ -58,7 +59,7 @@
                         Start by adding your first category.
                     </p>
 
-                    <x-button color="primary" onclick="add_category">
+                    <x-button color="primary" click="add_category">
                         Add Category
                     </x-button>
                 </div>

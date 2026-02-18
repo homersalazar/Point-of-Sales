@@ -26,6 +26,11 @@ class CategoryService
         return $this->categoryRepo->all();
     }
 
+    public function show($id)
+    {
+        return $this->categoryRepo->find($id);
+    }
+
     public function store(array $data)
     {
         DB::beginTransaction();
@@ -39,16 +44,15 @@ class CategoryService
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('create category error', ['exception' => $e]);
-            throw $e;
         }
     }
 
-    public function update($id, array $data)
+    public function update(array $data, $id)
     {
         DB::beginTransaction();
 
         try {
-            $category = $this->categoryRepo->update($id, $data);
+            $category = $this->categoryRepo->update($data, $id);
 
             DB::commit();
 
@@ -56,7 +60,6 @@ class CategoryService
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('update category error', ['exception' => $e]);
-            throw $e;
         }
     }
 
@@ -71,7 +74,6 @@ class CategoryService
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('delete category error', ['exception' => $e]);
-            throw $e;
         }
     }
 }

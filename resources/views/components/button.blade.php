@@ -6,11 +6,11 @@
     'form' => null,
     'icon' => null,
     'outline' => false,
-    'onclick' => null,
+    'click' => null,
 ])
 
 <button
-    @if($onclick) onclick="document.getElementById('{{ $onclick }}').click()" @endif
+    @if($click) onclick="document.getElementById('{{ $click }}').click()" @endif
     id="{{ $id }}"
     type="{{ $type }}"
     @if($form) form="{{ $form }}" @endif

@@ -9,10 +9,10 @@ class CategoryRepository
     public function paginate($search = null, $perPage = 10)
     {
         return Category::when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            })
-            ->latest()
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })
+            ->orderBy('name', 'asc')
             ->paginate($perPage)
             ->appends(['search' => $search]);
     }
@@ -32,7 +32,7 @@ class CategoryRepository
         return Category::findOrFail($id);
     }
 
-    public function update($id, array $data)
+    public function update(array $data, $id)
     {
         $category = $this->find($id);
         $category->update($data);
@@ -44,5 +44,4 @@ class CategoryRepository
         $category = $this->find($id);
         $category->delete();
     }
-
 }

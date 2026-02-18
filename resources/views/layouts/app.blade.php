@@ -4,9 +4,22 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Point of Sales</title>
+        {{-- JQuery CDN --}}
+        <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
+
+        {{-- Daisy UI --}}
         <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+
+        {{-- Tailwind CSS --}}
         <script src="https://cdn.tailwindcss.com"></script>
+
+        {{-- Font Awesome --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+
+        {{-- Sweet Alert 2 --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.all.min.js"></script>
+
         <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     </head>
         <body class="bg-base-200 min-h-screen flex">
@@ -173,6 +186,48 @@
         <main class="flex-1 p-5">
             @yield('content')
         </main>
+
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            </script>
+        @elseif (session('error'))
+            <script>
+                Swal.fire({
+                    title: "Error!",
+                    text: "{{ session('error') }}",
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            </script>
+        @elseif ($errors->any())
+            <script>
+                Swal.fire({
+                    title: "Error!",
+                    text: "{{ $errors->first() }}",
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            </script>
+        @elseif (session('info'))
+            <script>
+                Swal.fire({
+                    title: "Info!",
+                    text: "{{ session('info') }}",
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            </script>
+        @endif
 
         <script>
             function toggleSidebar() {

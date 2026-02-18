@@ -1,24 +1,25 @@
 <x-modal
-    id="add_category"
-    title="Add Category"
+    id="update_category_modal"
+    title="Update Category"
     :buttons="[
         [
-            'label' => 'Save',
+            'label' => 'Update',
             'type' => 'submit',
-            'color' => 'success',
-            'form' => 'addCategoryForm'
+            'color' => 'warning',
+            'form' => 'updateCategoryForm'
         ]
     ]"
 >
-    <form action="{{ route('category.create_category') }}" method="POST" class="space-y-2" id="addCategoryForm">
+    <form method="POST" class="space-y-2" id="updateCategoryForm">
         @csrf
-
+        @method('PUT')
         {{-- Name --}}
         <div>
             <label class="label">
                 <span class="label-text">Category Name</span>
             </label>
             <x-text-input
+                id="update_name"
                 name="name"
                 size="sm"
                 placeholder="Enter Category name"
@@ -32,6 +33,7 @@
                 <span class="label-text">Description</span>
             </label>
             <x-text-input
+                id="update_description"
                 name="description"
                 placeholder="Enter Description"
                 size="sm"
