@@ -32,17 +32,6 @@ class SaleService extends BaseService
                 'payment_status' => 'paid',
             ]);
 
-            // foreach ($data['items'] as $item) {
-            //     DB::table('sale_items')->insert([
-            //         'sale_id'    => $sale->id,
-            //         'product_id' => $item['id'],
-            //         'quantity'   => $item['qty'],
-            //         'price'      => $item['price'],
-            //         'subtotal'   => $item['qty'] * $item['price'],
-            //         'created_at' => now(),
-            //         'updated_at' => now(),
-            //     ]);
-            // }
             foreach ($data['items'] as $item) {
                 Sale_item::create([
                     'sale_id'    => $sale->id,

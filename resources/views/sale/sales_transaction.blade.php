@@ -50,7 +50,7 @@
 
 
             {{-- Product Grid --}}
-            <div id="productGrid" class="grid grid-cols-5 gap-3 overflow-y-auto scrollbar-thin pr-1 flex-1">
+            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 overflow-y-auto scrollbar-thin pr-1">
 
                 {{-- Add New Product Card --}}
                 <x-button
