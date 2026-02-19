@@ -82,10 +82,10 @@
                             <i class="fa-solid fa-cart-shopping nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Sales Transaction</span>
                         </a>
-                        <div class="nav-item" data-tip="Sales Orders">
+                        <a href="/sale/sales_order" class="nav-item" data-tip="Sales Orders">
                             <i class="fa-solid fa-clipboard-list nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Sales Orders</span>
-                        </div>
+                        </a>
                         <div class="nav-item" data-tip="Invoice">
                             <i class="fa-solid fa-file-invoice nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Invoice</span>

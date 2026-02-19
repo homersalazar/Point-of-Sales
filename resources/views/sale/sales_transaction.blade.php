@@ -21,7 +21,7 @@
 
                 <!-- Search -->
                 <div class="w-full md:w-72 px-2">
-                    <label class="input input-bordered flex items-center gap-2">
+                    <label class="input input-bordered input-sm flex items-center gap-2">
                         <input
                             type="text"
                             id="searchInput"

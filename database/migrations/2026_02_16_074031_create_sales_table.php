@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('total_amount', 12, 2);
             $table->string('payment_method'); // cash, gcash, card
             $table->string('payment_status')->default('paid'); // paid, partial, unpaid
+            $table->string('sales_status')->default('pending'); // pending, completed, cancelled
             $table->timestamps();
         });
     }

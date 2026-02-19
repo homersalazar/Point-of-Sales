@@ -19,8 +19,6 @@ class SaleService extends BaseService
     // SaleService.php
     public function placeOrder(array $data): array
     {
-        Log::info('Inside closure, data:', $data);
-
         $result = $this->executeTransaction(function () use ($data) {
             $sale = $this->repo->create([
                 'invoice_no'     => 'INV-' . now()->format('YmdHis'),
@@ -48,5 +46,25 @@ class SaleService extends BaseService
         return $result
             ? ['success' => true,  'message' => 'Order placed successfully!']
             : ['success' => false, 'message' => 'Something went wrong.'];
+    }
+
+    public function getAllSales(): array
+    {
+        $headers = $this->repo->findAllSales();
+
+        return collect($headers)->map(function ($header) {
+            $items = $this->repo->findSaleItems($header->order_no);
+
+            return [
+                'customer_name'  => $header->name,
+                'order_no'       => $header->order_no,
+                'payment_status' => $header->payment_status,
+                'created_at'     => $header->created_at,
+                'items'          => $items,
+                'total_amount'   => $header->total_amount,
+                'sales_status'   => $header->sales_status,
+                'payment_method'   => $header->payment_method
+            ];
+        })->all(); // returns collection items but keeps them as arrays
     }
 }

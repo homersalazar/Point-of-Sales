@@ -58,4 +58,13 @@ class SaleController extends Controller
 
         return response()->json($result, $result['success'] ? 200 : 500);
     }
+
+    public function sales_order(Request $request)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        $sales = $this->saleService->getAllSales();
+
+        return view('sale.sales_order', compact('search', 'perPage', 'sales'));
+    }
 }
