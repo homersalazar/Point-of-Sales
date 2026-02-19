@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    @include('product.create_product_modal')
+
     <div class="flex h-screen bg-base-200 overflow-hidden">
 
         {{-- ══════════════ LEFT PANEL ══════════════ --}}
@@ -17,51 +19,54 @@
                     </p>
                 </div>
 
-                {{-- <input type="text" id="searchInput" placeholder="Search..." class="grow text-sm" oninput="filterProducts()"> --}}
                 <!-- Search -->
-                <div class="w-full md:w-72">
-                    <x-search-input
-                        placeholder="Search..."
-                        size="md"
-                        oninput="filterProducts()"
-                    />
+                <div class="w-full md:w-72 px-2">
+                    <label class="input input-bordered flex items-center gap-2">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search..."
+                            class="grow"
+                            placeholder="Search"
+                            oninput="filterProducts()"
+                        />
+                        <i class="fa-solid fa-magnifying-glass w-4 h-4"></i>
+                    </label>
                 </div>
             </div>
 
             {{-- Category Tabs --}}
-            <div class="flex gap-3 mb-5">
-                @php
-                    $cats = [
-                    ['key'=>'all',      'label'=>'All Product', 'count'=>'1200 items'],
-                    ['key'=>'foods',    'label'=>'Foods',       'count'=>'12 items'],
-                    ['key'=>'baverage', 'label'=>'Baverage',    'count'=>'12 items'],
-                    ['key'=>'other',    'label'=>'Other',       'count'=>'12 items'],
-                    ];
-                @endphp
-
-                @foreach($cats as $i => $cat)
+            <div class="flex gap-2 mb-5 overflow-x-auto">
+                @foreach($cats as $cat)
                     <button
-                        onclick="setCategory(this, '{{ $cat['key'] }}')"
-                        data-cat="{{ $cat['key'] }}"
-                        class="cat-tab btn btn-ghost h-auto py-2.5 px-4 flex-col items-start rounded-xl border border-base-300 bg-white normal-case hover:bg-blue-50 hover:border-blue-400 transition-all {{ $i === 0 ? '!bg-blue-500 !border-blue-500 text-white hover:!bg-blue-600' : '' }}">
-                        <span class="font-bold text-sm {{ $i === 0 ? 'text-white' : 'text-base-content' }}">{{ $cat['label'] }}</span>
-                        <span class="text-xs font-normal mt-0.5 {{ $i === 0 ? 'text-white/70' : 'text-base-content/50' }}">{{ $cat['count'] }}</span>
+                        onclick="setCategory(this, '{{ $cat->id }}')"
+                        data-cat="{{ $cat->id }}"
+                        class="cat-tab btn btn-ghost flex-shrink-0 w-32 h-auto py-2.5 px-4 flex-col items-start rounded-xl border border-base-300 bg-white normal-case hover:bg-yellow-50 hover:border-yellow-400 transition-all {{ $cat->id === 0 ? '!bg-yellow-500 !border-yellow-500 text-white hover:!bg-yellow-600' : '' }}">
+                        <span class="font-bold text-sm {{ $cat->id === 0 ? 'text-white' : 'text-base-content' }}">{{ $cat->name }}</span>
+                        <span class="text-xs font-normal mt-0.5 {{ $cat->id === 0 ? 'text-white/70' : 'text-base-content/50' }}">{{ $cat->total_products }}</span>
                     </button>
                 @endforeach
             </div>
+
 
             {{-- Product Grid --}}
             <div id="productGrid" class="grid grid-cols-5 gap-3 overflow-y-auto scrollbar-thin pr-1 flex-1">
 
                 {{-- Add New Product Card --}}
-                <div onclick="alert('Add new product')"
-                    class="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/60 cursor-pointer hover:bg-indigo-100 hover:border-indigo-400 transition-all min-h-[160px] group h-44">
-                    <div class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-indigo-500 text-2xl font-light group-hover:scale-110 transition-transform">+</div>
-                    <span class="text-sm font-semibold text-indigo-500">Add New Product</span>
-                </div>
+                <x-button
+                    click="add_product"
+                    class="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-yellow-200 bg-yellow-50/60 cursor-pointer hover:bg-yellow-100 hover:border-yellow-400 transition-all min-h-[160px] group h-44 w-full">
+
+                    <div class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-yellow-500 text-2xl font-light group-hover:scale-110 transition-transform">
+                        +
+                    </div>
+
+                    <span class="text-sm font-semibold text-yellow-500">Add New Product</span>
+                </x-button>
+
 
                 @foreach($products as $row)
-                    <div class="card card-compact bg-base-100 w-full shadow-sm text-sm h-44 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all duration-200"
+                    <div class="product-card card card-compact bg-base-100 w-full shadow-sm text-sm h-44 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all duration-200"
                         data-id="{{ $row->id }}"
                         data-name="{{ $row->name }}"
                         data-price="{{ $row->selling_price }}"
@@ -85,17 +90,17 @@
         </div>
 
         {{-- ══════════════ RIGHT PANEL ══════════════ --}}
-        <div class="w-[300px] border-l border-base-200 flex flex-col p-5 overflow-hidden">
+        <div class="w-[300px] border-l border-yellow-200 px-5 flex flex-col overflow-hidden">
             <h2 class="text-lg font-extrabold text-base-content mb-5">Detail Order</h2>
 
             {{-- Customer --}}
             <label class="label py-0 mb-1.5">
                 <span class="label-text text-xs font-semibold text-base-content/50 uppercase tracking-wide">Customer</span>
             </label>
-            <x-select name="category_id" size="sm" caption="Type or Select Customer">
-                <option value="1">Student 1</option>
-                <option value="2">Man</option>
-                <option value="3">Women</option>
+            <x-select name="customer_id" size="sm" caption="Type or Select Customer">
+                @foreach ($customers as $row)
+                    <option value="{{ $row->id }}">{{ $row->name }}</option>
+                @endforeach
             </x-select>
 
             <p class="text-sm font-semibold text-base-content mt-4 mb-3">Your order :</p>
@@ -195,13 +200,13 @@
                 container.innerHTML = '<p class="text-sm text-base-content/40 text-center py-8">No items added yet.</p>';
                 document.getElementById('itemCount').textContent = 0;
                 document.getElementById('subtotal').textContent = fmt(0);
-                document.getElementById('tax').textContent = fmt(0);
                 document.getElementById('total').textContent = fmt(0);
                 return;
             }
 
             let subtotal = 0;
             let html = '';
+            const assetBase = "{{ asset('storage/product') }}";
 
             ids.forEach(id => {
                 const item = order[id];
@@ -210,24 +215,18 @@
 
                 html += `
                     <div class="flex items-center gap-3 py-3 bg-white p-2 rounded-xl mb-1">
-                        <img src="{{ asset('storage/product') }}/${item.img}" class="w-11 h-11 rounded-xl object-cover flex-shrink-0">
+                        <img src="${assetBase}/${item.img}" class="w-11 h-11 rounded-xl object-cover flex-shrink-0">
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-bold text-base-content truncate">${item.name}</p>
                             <div class="flex items-center gap-2">
-                                <button onclick="changeQty('${id}', -1)" class="btn btn-xs btn-outline btn-square rounded-lg w-6 h-6 min-h-0 text-blue-500 border-base-300 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-600">−</button>
+                                <button onclick="changeQty('${id}', -1)" class="btn btn-xs btn-outline btn-square rounded-lg w-6 h-6 min-h-0 text-base-500 border-base-300 hover:bg-base-50 hover:border-base-400 hover:text-base-600">−</button>
                                 <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
-                                <button onclick="changeQty('${id}', 1)" class="btn btn-xs btn-outline btn-square rounded-lg w-6 h-6 min-h-0 text-blue-500 border-base-300 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-600">+</button>
+                                <button onclick="changeQty('${id}', 1)" class="btn btn-xs btn-outline btn-square rounded-lg w-6 h-6 min-h-0 text-base-500 border-base-300 hover:bg-base-50 hover:border-base-400 hover:text-base-600">+</button>
                             </div>
                         </div>
                         <div class="flex flex-col items-end gap-2 flex-shrink-0">
                             <button onclick="removeItem('${id}')" class="btn btn-ghost btn-xs btn-square text-error hover:bg-red-50 p-0 min-h-0 h-auto">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <polyline points="3 6 5 6 21 6"/>
-                                    <path d="M19 6l-1 14H6L5 6"/>
-                                    <path d="M10 11v6"/>
-                                    <path d="M14 11v6"/>
-                                    <path d="M9 6V4h6v2"/>
-                                </svg>
+                                <i class="fa-solid fa-trash-can w-4 h-4"></i>
                             </button>
                             <span class="text-sm font-bold text-base-content">${fmt(lineTotal)}</span>
                         </div>
@@ -237,30 +236,28 @@
 
             container.innerHTML = html;
 
-            const tax = Math.round(subtotal * 0.1);
             document.getElementById('itemCount').textContent = ids.length;
             document.getElementById('subtotal').textContent = fmt(subtotal);
-            document.getElementById('tax').textContent = fmt(tax);
-            document.getElementById('total').textContent = fmt(subtotal + tax);
+            document.getElementById('total').textContent = fmt(subtotal);
         }
 
         function setCategory(el, cat) {
             document.querySelectorAll('.cat-tab').forEach(t => {
-                t.classList.remove('!bg-blue-500', '!border-blue-500');
+                t.classList.remove('!bg-yellow-500', '!border-yellow-500');
                 t.querySelectorAll('span').forEach((s, i) => {
                     s.classList.remove('text-white', 'text-white/70');
                     s.classList.add(i === 0 ? 'text-base-content' : 'text-base-content/50');
                 });
             });
 
-            el.classList.add('!bg-blue-500', '!border-blue-500');
+            el.classList.add('!bg-yellow-500', '!border-yellow-500');
             el.querySelectorAll('span').forEach((s, i) => {
                 s.classList.remove('text-base-content', 'text-base-content/50');
                 s.classList.add(i === 0 ? 'text-white' : 'text-white/70');
             });
 
             document.querySelectorAll('.product-card').forEach(card => {
-                card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+                card.style.display = (cat === '0' || card.dataset.category === cat) ? '' : 'none';
             });
         }
 
@@ -273,10 +270,61 @@
 
         function makeOrder() {
             if (!Object.keys(order).length) {
-            alert('Please add items to your order first.');
-            return;
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Please add items to your order first.',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 4000
+                });
+                return;
             }
-            alert('Order placed successfully! 🎉');
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            const customer_id = document.querySelector('select[name="customer_id"]').value;
+            const payment_method = document.querySelector('select[name="payment_method"]').value;
+            $.ajax({
+                url: "{{ route('sale.store') }}",
+                method: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    // _token: '{{ csrf_token() }}',
+                    customer_id,
+                    payment_method,
+                    items: Object.values(order),
+                }),
+                success: function(data) {
+                    Swal.fire({
+                        title: data.success ? 'Success!' : 'Info!',
+                        text: data.message,
+                        icon: data.success ? 'success' : 'info',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(() => {
+                        // Clear order after success
+                        Object.keys(order).forEach(id => delete order[id]);
+                        renderOrder();
+                    });
+                },
+                error: function(xhr){
+                    let message = 'An error occurred.';
+                    if(xhr.responseJSON && xhr.responseJSON.message){
+                        message = xhr.responseJSON.message;
+                    }
+                    Swal.fire({
+                        title: 'Error!',
+                        text: message,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 4000
+                    });
+                }
+            });
         }
     </script>
 @endsection

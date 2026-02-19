@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository
 {
@@ -22,5 +23,29 @@ class ProductRepository extends BaseRepository
             ->orderBy('name', 'asc')
             ->paginate($perPage)
             ->appends(['search' => $search]);
+    }
+
+    public function countByCategory()
+    {
+        return DB::select("
+            SELECT
+                0 AS id,
+                'All Product' AS name,
+                CONCAT(COUNT(*), ' items') AS total_products
+            FROM products
+
+            UNION ALL
+
+            SELECT
+                c.id,
+                c.name,
+                CONCAT(COUNT(p.id), ' items') AS total_products
+            FROM categories c
+            LEFT JOIN products p
+                ON p.category_id = c.id
+            GROUP BY c.id, c.name
+
+            ORDER BY id ASC
+        ");
     }
 }

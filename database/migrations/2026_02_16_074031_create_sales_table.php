@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_no')->unique();
             $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->decimal('total_amount', 12, 2);
             $table->string('payment_method'); // cash, gcash, card
             $table->string('payment_status')->default('paid'); // paid, partial, unpaid

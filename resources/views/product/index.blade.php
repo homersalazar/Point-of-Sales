@@ -37,8 +37,8 @@
                     icon="fa-solid fa-plus"
                     click="add_product"
                 >
-                Add Product
-            </x-button>
+                    Add Product
+                </x-button>
             </div>
         </div>
 

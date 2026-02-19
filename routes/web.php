@@ -37,4 +37,5 @@ Route::prefix('category')->group(function () {
 
 Route::prefix('sale')->group(function () {
     Route::get('/', [SaleController::class, 'sales_transaction'])->name('sale.sales_transaction');
+    Route::post('/store', [SaleController::class, 'store'])->name('sale.store');
 });

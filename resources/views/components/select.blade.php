@@ -19,7 +19,7 @@
 
 >
     @if ($caption)
-        <option disabled selected>{{ $caption }}</option>
+        <option value="" disabled selected>{{ $caption }}</option>
     @endif
     {{ $slot }}
 </select>
