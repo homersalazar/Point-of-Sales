@@ -1,5 +1,5 @@
 @forelse ($sales as $row)
-    <div class="card bg-base-100 shadow-xl w-80 rounded-3xl p-6 flex flex-col max-h-[430px]">
+    <div class="order-card card bg-base-100 shadow-xl w-full rounded-3xl p-6 flex flex-col max-h-[430px]" data-stats="{{ $row['sales_status'] }}">
         <!-- Header -->
         <div class="flex items-start justify-between mb-3">
             <div class="flex items-center gap-3">
@@ -54,7 +54,7 @@
             @foreach ($row['items'] as $item)
                 <div class="grid grid-cols-[1fr_36px_64px] items-center">
                     <span class="text-sm font-medium text-base-content">{{ $item->item }}</span>
-                    <span class="text-sm text-base-content/40 text-center">{{ $item->qty }}</span>
+                    <span class="text-sm text-base-content/40 text-center">x{{ $item->qty }}</span>
                     <span class="text-sm font-medium text-base-content text-right">₱{{ number_format($item->subtotal, 2) }}</span>
                 </div>
             @endforeach
@@ -69,13 +69,10 @@
 
         <!-- Actions -->
         <div class="flex gap-3">
-            <button class="btn btn-ghost flex-1 rounded-2xl font-semibold text-sm bg-base-200 hover:bg-base-300">
-                Cancel
+            <button class="btn btn-ghost flex-1 rounded-2xl font-semibold text-white text-sm bg-red-500 hover:bg-red-600">
+                Cancelled
             </button>
-            <button class="btn flex-1 rounded-2xl font-semibold text-sm text-white border-none"
-                style="background-color: #f4a83a; box-shadow: 0 4px 14px rgba(244,168,58,0.4);"
-                onmouseover="this.style.backgroundColor='#e59728'"
-                onmouseout="this.style.backgroundColor='#f4a83a'">
+            <button class="btn flex-1 rounded-2xl font-semibold text-sm text-white border-none bg-yellow-500 hover:bg-yellow-600">
                 Approved
             </button>
         </div>

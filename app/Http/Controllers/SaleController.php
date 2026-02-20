@@ -64,7 +64,7 @@ class SaleController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $sales = $this->saleService->getAllSales();
-
-        return view('sale.sales_order', compact('search', 'perPage', 'sales'));
+        $status = $this->saleService->countByOrderStatus();
+        return view('sale.sales_order', compact('search', 'perPage', 'sales', 'status'));
     }
 }

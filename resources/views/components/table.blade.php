@@ -4,7 +4,7 @@
 ])
 
 <div class="overflow-x-auto bg-white rounded-lg shadow">
-    <table class="table table-sm table-bordered table-zebra w-full" id="{{ $id }}">
+    <table {{ $attributes->class(['table', 'table-sm', 'table-bordered', 'table-zebra', 'w-full']) }} id="{{ $id }}">
         <thead class="bg-base-300">
             <tr>
                 @foreach ($headers as $header)

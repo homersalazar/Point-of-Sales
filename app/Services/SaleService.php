@@ -14,9 +14,9 @@ class SaleService extends BaseService
     public function __construct(SaleRepository $saleRepo)
     {
         parent::__construct($saleRepo);
+        $this->saleRepo = $saleRepo;
     }
 
-    // SaleService.php
     public function placeOrder(array $data): array
     {
         $result = $this->executeTransaction(function () use ($data) {
@@ -66,5 +66,10 @@ class SaleService extends BaseService
                 'payment_method'   => $header->payment_method
             ];
         })->all(); // returns collection items but keeps them as arrays
+    }
+
+    public function countByOrderStatus()
+    {
+        return $this->saleRepo->countByOrderStatus();
     }
 }

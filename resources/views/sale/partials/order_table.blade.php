@@ -5,7 +5,7 @@
         :headers="['#', 'Date & Time', 'Customer Name', 'Payment Status', 'Total Payment', 'Order Status', 'Orders']"
     >
         @forelse ($sales as $row)
-            <tr>
+            <tr class="order-card" data-stats="{{ strtolower($row['sales_status']) }}">
                 <th>00{{ $row['order_no'] }}</th>
                 <td>{{ \Carbon\Carbon::parse($row['created_at'])->format('d/m/Y - h:ia') }}</td>
                 <td>{{ $row['customer_name'] }}</td>
@@ -18,7 +18,7 @@
 
                     <span class="badge font-semibold
                         {{ $status === 'completed' ? 'badge-success' : '' }}
-                        {{ $status === 'cancel' ? 'badge-error' : '' }}
+                        {{ $status === 'cancelled' ? 'badge-error' : '' }}
                         {{ $status === 'pending' ? 'badge-warning' : '' }}">
 
                         {{ ucwords($status) }}

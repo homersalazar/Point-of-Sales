@@ -36,23 +36,19 @@
         {{-- Filter and Viewer --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div class="flex gap-2 mb-5 overflow-x-auto">
-
+                @foreach($status as $stats)
                     <button
-                        class="btn btn-ghost flex-shrink-0 w-32 h-auto py-2.5 px-4 flex-col items-start rounded-xl border border-base-300 bg-white normal-case hover:bg-yellow-50 hover:border-yellow-400 transition-all bg-yellow-500 !border-yellow-500 text-white hover:!bg-yellow-600">
-                        <span class="font-bold text-sm text-white">All</span>
+                        onclick="setStatus(this, '{{ strtolower($stats->name) }}')"
+                        data-stats="{{ strtolower($stats->name) }}"
+                        class="stats-tab btn btn-ghost flex-shrink-0 w-32 h-auto py-2.5 px-4 flex-col items-start rounded-xl border border-base-300 bg-white normal-case hover:bg-yellow-50 hover:border-yellow-400 transition-all {{ $stats->id === 0 ? '!bg-yellow-500 !border-yellow-500 text-white hover:!bg-yellow-600' : '' }}">
+                        <span class="font-bold text-sm {{ $stats->id === 0 ? 'text-white' : 'text-base-content' }}">{{ $stats->name }}</span>
+                        <span class="text-xs font-normal mt-0.5 {{ $stats->id === 0 ? 'text-white/70' : 'text-base-content/50' }}">{{ $stats->total_products }}</span>
                     </button>
-                    <button
-                        class="btn btn-ghost flex-shrink-0 w-32 h-auto py-2.5 px-4 flex-col items-start rounded-xl border border-base-300 bg-white normal-case hover:bg-yellow-50 hover:border-yellow-400 transition-all bg-yellow-500 !border-yellow-500 text-white hover:!bg-yellow-600">
-                        <span class="font-bold text-sm text-white">Pending</span>
-                    </button>
-                    <button
-                        class="btn btn-ghost flex-shrink-0 w-32 h-auto py-2.5 px-4 flex-col items-start rounded-xl border border-base-300 bg-white normal-case hover:bg-yellow-50 hover:border-yellow-400 transition-all bg-yellow-500 !border-yellow-500 text-white hover:!bg-yellow-600">
-                        <span class="font-bold text-sm text-white">Completed</span>
-                    </button>
+                @endforeach
             </div>
 
             <!-- Viewer -->
-            <div class="join mb-4">
+            <div class="join mb-4 w-32 h-auto">
                 <input class="join-item btn view-toggle"
                     type="radio"
                     name="view"
@@ -69,7 +65,7 @@
         </div>
 
         {{-- Content --}}
-        <div id="gridView" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div id="gridView" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             @include('sale.partials.order_card')
         </div>
 
@@ -86,5 +82,28 @@
                 document.getElementById('tableView').classList.toggle('hidden', this.value !== 'table');
             });
         });
+
+        function setStatus(el, stats) {
+            document.querySelectorAll('.stats-tab').forEach(t => {
+                t.classList.remove('!bg-yellow-500', '!border-yellow-500');
+                t.querySelectorAll('span').forEach((s, i) => {
+                    s.classList.remove('text-white', 'text-white/70');
+                    s.classList.add(i === 0 ? 'text-base-content' : 'text-base-content/50');
+                });
+            });
+
+            el.classList.add('!bg-yellow-500', '!border-yellow-500');
+            el.querySelectorAll('span').forEach((s, i) => {
+                s.classList.remove('text-base-content', 'text-base-content/50');
+                s.classList.add(i === 0 ? 'text-white' : 'text-white/70');
+            });
+
+            document.querySelectorAll('.order-card').forEach(card => {
+                card.style.display =
+                    (stats === 'all product' || card.dataset.stats === stats)
+                        ? ''
+                        : 'none';
+                    });
+        }
     </script>
 @endsection
