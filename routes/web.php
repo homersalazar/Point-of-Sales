@@ -40,5 +40,6 @@ Route::prefix('sale')->group(function () {
     Route::post('/store', [SaleController::class, 'store'])->name('sale.store');
 
     Route::get('/sales_order', [SaleController::class, 'sales_order'])->name('sale.sales_order');
+    Route::put('/update/{id}', [SaleController::class, 'update'])->name('sale.update');
 
 });

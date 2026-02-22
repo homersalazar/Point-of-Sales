@@ -67,4 +67,15 @@ class SaleController extends Controller
         $status = $this->saleService->countByOrderStatus();
         return view('sale.sales_order', compact('search', 'perPage', 'sales', 'status'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'action' => 'required|in:cancelled,completed',
+        ]);
+
+        $result = $this->saleService->updateStatus($id, $request->action);
+
+        return response()->json($result, $result['success'] ? 200 : 500);
+    }
 }

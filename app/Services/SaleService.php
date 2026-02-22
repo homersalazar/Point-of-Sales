@@ -72,4 +72,15 @@ class SaleService extends BaseService
     {
         return $this->saleRepo->countByOrderStatus();
     }
+
+    public function updateStatus($id, $status): array
+    {
+        $updated = $this->update([
+            'sales_status' => $status
+        ], $id);
+
+        return $updated
+            ? ['success' => true, 'message' => 'Order updated successfully.']
+            : ['success' => false, 'message' => 'Failed to update order.'];
+    }
 }

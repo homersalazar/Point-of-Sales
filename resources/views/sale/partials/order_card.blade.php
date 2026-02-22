@@ -67,15 +67,29 @@
             <span class="text-2xl font-bold text-base-content">₱{{ number_format($row['total_amount'], 2) }}</span>
         </div>
 
-        <!-- Actions -->
-        <div class="flex gap-3">
-            <button class="btn btn-ghost flex-1 rounded-2xl font-semibold text-white text-sm bg-red-500 hover:bg-red-600">
-                Cancelled
-            </button>
-            <button class="btn flex-1 rounded-2xl font-semibold text-sm text-white border-none bg-yellow-500 hover:bg-yellow-600">
-                Approved
-            </button>
-        </div>
+        @if ($row['sales_status'] == 'pending')
+            <!-- Actions -->
+            <div class="flex-row gap-3 w-full">
+                <x-button color="error" class="text-white" onclick="orderPrep('{{ $row['order_no'] }}', 'cancelled')">
+                    Cancel
+                </x-button>
+
+                <x-button color="success" class="text-white" onclick="orderPrep('{{ $row['order_no'] }}', 'completed')">
+                    Complete
+                </x-button>
+            </div>
+        @else
+            @php
+                $status = strtolower($row['sales_status']);
+            @endphp
+
+            <span class="badge font-semibold text-white
+                {{ $status === 'completed' ? 'badge-success' : '' }}
+                {{ $status === 'cancelled' ? 'badge-error' : '' }}
+            ">
+                {{ ucwords($status) }}
+            </span>
+        @endif
     </div>
 @empty
     <p class="text-center text-base-content/50 col-span-full">No orders found.</p>

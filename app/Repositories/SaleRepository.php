@@ -18,7 +18,7 @@ class SaleRepository extends BaseRepository
         return DB::select("
             SELECT
                 c.name,
-                s.id         AS order_no,
+                s.id AS order_no,
                 s.payment_status,
                 s.total_amount,
                 s.created_at,
@@ -28,7 +28,12 @@ class SaleRepository extends BaseRepository
             LEFT JOIN customers c ON s.customer_id = c.id
             WHERE s.created_at >= CURDATE()
             AND s.created_at < CURDATE() + INTERVAL 1 DAY
-            ORDER BY s.created_at DESC
+            ORDER BY
+                CASE s.sales_status
+                    WHEN 'pending' THEN 0
+                    ELSE 1
+                END,
+                s.created_at DESC;
         ");
     }
 
