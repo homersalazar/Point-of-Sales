@@ -90,10 +90,10 @@
                             <i class="fa-solid fa-file-invoice nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Invoice</span>
                         </div>
-                        <div class="nav-item" data-tip="Customers">
+                        <a href="/customer/" class="nav-item" data-tip="Customers">
                             <i class="fa-solid fa-users nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Customers</span>
-                        </div>
+                        </a>
                     </div>
                 </div>
 

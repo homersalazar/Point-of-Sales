@@ -1,39 +1,19 @@
 
 
-<div id="productTable">
-    <x-table
-        :headers="['', 'Name', 'SKU', 'Cost Price', 'Selling Price', 'Stock', 'Action']"
-    >
-        @forelse ($products as $row)
+<div id="customerTable">
+    <x-table  :headers="['Name', 'Email', 'Phone no.', 'Address', 'Action']">
+        @forelse ($customers as $row)
             <tr>
-                <th>
-                    <x-checkbox />
-                </th>
-                <td>
-                    <div class="flex items-center gap-3">
-                        <div class="avatar">
-                            <div class="mask mask-squircle h-12 w-12">
-                                <img
-                                    src="{{ asset('storage/product/' . $row->image) }}"
-                                    alt="{{ $row->name }}"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="font-bold">{{ $row->name }}</div>
-                        </div>
-                    </div>
-                </td>
-                <td>{{ $row->sku }}</td>
-                <td>₱{{ $row->cost_price }}</td>
-                <td>₱{{ $row->selling_price }}</td>
-                <td>{{ $row->stock }}</td>
+                <th>{{ $row->name }}</th>
+                <td>{{ $row->email }}</td>
+                <td>{{ $row->phone }}</td>
+                <td>{{ $row->address }}</td>
                 <td>
                     <div class="flex flex-row gap-2 w-full">
                         <x-button
                             color="info"
                             outline
-                            onclick="update_product('{{ $row->id }}', '{{ $row->category_id }}', '{{ $row->name }}', '{{ $row->cost_price }}', '{{ $row->selling_price }}', '{{ $row->stock }}', '{{ $row->image }}')"
+                            onclick="update_customer('{{ $row->id }}', '{{ $row->name }}', '{{ $row->email }}', '{{ $row->phone }}', '{{ $row->address }}')"
                         >
                             <i class="fa-solid fa-pen-to-square"></i>
                         </x-button>
@@ -41,7 +21,7 @@
                         <x-button
                             color="error"
                             outline
-                            onclick="delete_product('{{ $row->id }}')"
+                            onclick="delete_customer('{{ $row->id }}')"
                         >
                             <i class="fa-solid fa-trash-can"></i>
                         </x-button>
@@ -50,62 +30,50 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center text-gray-500">No products found.</td>
+                <td colspan="3" class="text-center text-gray-500">No customers found.</td>
             </tr>
         @endforelse
     </x-table>
 
-    @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
+    @if ($customers instanceof \Illuminate\Pagination\LengthAwarePaginator)
         <div class="mt-4">
-            {{ $products->links() }}
+            {{ $customers->links() }}
         </div>
     @endif
 </div>
 
 <script>
-    const update_product = (prod_id, ctgy_id, prod_name, cost_price, selling_price, stock, image) => {
+    const update_customer = (id, name, email, phone, address) => {
         // Open modal
-        document.getElementById('update_product_modal').checked = true;
-
-        // Set the category select to the correct category
-        const categorySelect = document.getElementById('category_id');
-        categorySelect.value = ctgy_id;
+        document.getElementById('update_customer_modal').checked = true;
 
         // Fill inputs
-        document.getElementById('name').value = prod_name;
-        document.getElementById('cost_price').value = cost_price;
-        document.getElementById('selling_price').value = selling_price;
-        document.getElementById('stock').value = stock;
-        document.getElementById('image').value = '';
-
-        // Optional: show current image in modal
-        if (image) {
-            document.getElementById('current_image').src = `/storage/product/${image}`;
-        } else {
-            document.getElementById('current_image').src = '';
-        }
+        document.getElementById('name').value = name;
+        document.getElementById('email').value = email;
+        document.getElementById('phone').value = phone;
+        document.getElementById('address').value = address;
 
         // Handle form submit
-        $("#updateProductForm").off("submit").on("submit", function(e) {
+        $("#updateCustomerForm").off("submit").on("submit", function (e) {
             e.preventDefault();
-            const formData = new FormData(this);
+            const formData = $(this).serialize();
             $.ajax({
-                url: `/product/update_product/${prod_id}`,
+                url: `/customer/update_customer/${id}`,
                 method: "POST",
                 data: formData,
-                processData: false,
-                contentType: false,
-                success: function(data) {
+                success: function(data){
                     Swal.fire({
-                        title: data.status === 'success' ? 'Success!' : 'Info!',
+                    title: data.status === 'success' ? 'Success!' : 'Info!',
                         text: data.message,
                         icon: data.status,
                         showConfirmButton: false,
                         timer: 3000
-                    }).then(() => window.location.reload());
+                    }).then(() => {
+                        window.location.reload();
+                    });
                 },
                 error: function(xhr){
-                    let message = 'An error occurred.';
+                    let message = 'An error occurred while updating the category.';
                     if(xhr.responseJSON && xhr.responseJSON.message){
                         message = xhr.responseJSON.message;
                     }
@@ -121,7 +89,7 @@
         });
     }
 
-    const delete_product = id => {
+    const delete_customer = id => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -133,7 +101,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                     $.ajax({
-                    url: `/product/delete_product/${id}`,
+                    url: `/customer/delete_customer/${id}`,
                     method:"POST",
                     data: {
                         '_token': '{{ csrf_token() }}',

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -41,5 +42,11 @@ Route::prefix('sale')->group(function () {
 
     Route::get('/sales_order', [SaleController::class, 'sales_order'])->name('sale.sales_order');
     Route::put('/update/{id}', [SaleController::class, 'update'])->name('sale.update');
+});
 
+Route::prefix('customer')->group(function () {
+    Route::get('/', [CustomerController::class, 'index'])->name('customer.index');
+    Route::post('/create_customer', [CustomerController::class, 'create_customer'])->name('customer.create_customer');
+    Route::put('/update_customer/{id}', [CustomerController::class, 'update_customer'])->name('customer.update_customer');
+    Route::delete('/delete_customer/{id}', [CustomerController::class, 'delete_customer'])->name('customer.delete_customer');
 });

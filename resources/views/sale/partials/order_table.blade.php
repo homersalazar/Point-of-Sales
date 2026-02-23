@@ -16,7 +16,7 @@
                         $status = strtolower($row['sales_status']);
                     @endphp
 
-                    <span class="badge font-semibold
+                    <span class="badge font-semibold text-white
                         {{ $status === 'completed' ? 'badge-success' : '' }}
                         {{ $status === 'cancelled' ? 'badge-error' : '' }}
                         {{ $status === 'pending' ? 'badge-info' : '' }}">

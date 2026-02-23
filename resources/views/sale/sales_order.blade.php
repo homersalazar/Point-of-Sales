@@ -144,7 +144,7 @@
             switch (action) {
                 case 'cancelled':
                     actions = 'cancel this transaction!';
-                    label = 'Cancel'; // ✅ FIX HERE
+                    label = 'Cancel Order'; // ✅ FIX HERE
                     requestData = {
                         action: 'cancelled',
                         _method: 'PUT'
@@ -153,7 +153,7 @@
 
                 case 'completed':
                     actions = 'complete this transaction!';
-                    label = 'Complete'; // ✅ FIX HERE
+                    label = 'Complete Order'; // ✅ FIX HERE
                     requestData = {
                         action: 'completed',
                         _method: 'PUT'
