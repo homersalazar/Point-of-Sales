@@ -2,7 +2,7 @@
 
 @section('content')
     @include('product.create_product_modal')
-
+    @include('sale.payment_modal')
     <div class="flex h-screen bg-base-200 overflow-hidden">
 
         {{-- ══════════════ LEFT PANEL ══════════════ --}}
@@ -268,7 +268,7 @@
             });
         }
 
-        function makeOrder() {
+        const makeOrder = () => {
             if (!Object.keys(order).length) {
                 Swal.fire({
                     title: 'Warning!',
@@ -276,6 +276,61 @@
                     icon: 'warning',
                     showConfirmButton: false,
                     timer: 4000
+                });
+                return;
+            }
+
+            const subtotal = Object.values(order).reduce((sum, item) => {
+                return sum + (item.price * item.qty);
+            }, 0);
+
+            // Show total inside modal
+            document.getElementById('modal_total').value = fmt(subtotal);
+            document.getElementById('modal_total').dataset.total = subtotal;
+
+            document.getElementById('amount_received').value = '';
+            document.getElementById('change_amount').value = '';
+
+            // Open modal
+            document.getElementById('payment_modal').checked = true;
+        }
+
+        const computeChange = () => {
+            const total = parseFloat(document.getElementById('modal_total').dataset.total);
+            const received = parseFloat(document.getElementById('amount_received').value) || 0;
+
+            const change = received - total;
+
+            const changeInput = document.getElementById('change_amount');
+
+            if (change >= 0) {
+                changeInput.value = fmt(change);
+
+                // GREEN when valid
+                changeInput.classList.remove('text-red-600');
+                changeInput.classList.add('text-green-600');
+
+            } else {
+                changeInput.value = "Insufficient amount";
+
+                // RED when insufficient
+                changeInput.classList.remove('text-green-600');
+                changeInput.classList.add('text-red-600');
+            }
+        };
+
+        const confirmOrder = () => {
+
+            const total = parseFloat(document.getElementById('modal_total').dataset.total);
+            const received = parseFloat(document.getElementById('amount_received').value) || 0;
+
+            if (received < total) {
+                Swal.fire({
+                    title: 'Insufficient Payment',
+                    text: 'Amount received is less than total payment.',
+                    icon: 'warning',
+                    timer: 3000,
+                    showConfirmButton: false
                 });
                 return;
             }
@@ -288,40 +343,38 @@
 
             const customer_id = document.querySelector('select[name="customer_id"]').value;
             const payment_method = document.querySelector('select[name="payment_method"]').value;
+
             $.ajax({
                 url: "{{ route('sale.store') }}",
                 method: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    // _token: '{{ csrf_token() }}',
                     customer_id,
                     payment_method,
+                    amount_received: received,
+                    change: received - total,
                     items: Object.values(order),
                 }),
                 success: function(data) {
+
+                    document.getElementById('payment_modal').checked = false;
+
                     Swal.fire({
-                        title: data.success ? 'Success!' : 'Info!',
+                        title: 'Success!',
                         text: data.message,
-                        icon: data.success ? 'success' : 'info',
-                        showConfirmButton: false,
-                        timer: 3000
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false
                     }).then(() => {
-                        // Clear order after success
                         Object.keys(order).forEach(id => delete order[id]);
                         renderOrder();
                     });
                 },
                 error: function(xhr){
-                    let message = 'An error occurred.';
-                    if(xhr.responseJSON && xhr.responseJSON.message){
-                        message = xhr.responseJSON.message;
-                    }
                     Swal.fire({
                         title: 'Error!',
-                        text: message,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 4000
+                        text: 'Something went wrong.',
+                        icon: 'error'
                     });
                 }
             });

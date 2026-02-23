@@ -71,11 +71,11 @@
             <!-- Actions -->
             <div class="flex-row gap-3 w-full">
                 <x-button color="error" class="text-white" onclick="orderPrep('{{ $row['order_no'] }}', 'cancelled')">
-                    Cancel
+                    Cancel Order
                 </x-button>
 
                 <x-button color="success" class="text-white" onclick="orderPrep('{{ $row['order_no'] }}', 'completed')">
-                    Complete
+                    Complete Order
                 </x-button>
             </div>
         @else
@@ -87,7 +87,7 @@
                 {{ $status === 'completed' ? 'badge-success' : '' }}
                 {{ $status === 'cancelled' ? 'badge-error' : '' }}
             ">
-                {{ ucwords($status) }}
+                {{ ucwords($status) }} Order
             </span>
         @endif
     </div>
