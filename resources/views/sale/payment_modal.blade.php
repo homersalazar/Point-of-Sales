@@ -9,38 +9,35 @@
                 <label class="label">
                     <span class="label-text text-sm">Total Payment</span>
                 </label>
-                <input type="text" id="modal_total"
-                    class="input input-bordered w-full font-bold"
-                    readonly>
+                <x-text-input id="modal_total"
+                    readonly />
             </div>
 
             <div>
                 <label class="label">
                     <span class="label-text text-sm">Amount Received</span>
                 </label>
-                <input type="number"
+                <x-text-input type="number"
                     id="amount_received"
-                    class="input input-bordered w-full"
                     placeholder="Enter amount"
-                    oninput="computeChange()">
+                    oninput="computeChange()" />
             </div>
 
             <div>
                 <label class="label">
                     <span class="label-text text-sm">Change (Sukli)</span>
                 </label>
-                <input type="text"
+                <x-text-input
                     id="change_amount"
-                    class="input input-bordered w-full font-bold"
-                    readonly>
+                    readonly />
             </div>
         </div>
 
         <div class="modal-action">
             <label for="payment_modal" class="btn btn-ghost">Cancel</label>
-            <button onclick="confirmOrder()" class="btn btn-primary">
+            <x-button onclick="confirmOrder()" size="md" color="primary">
                 Confirm Payment
-            </button>
+            </x-button>
         </div>
     </div>
 </div>

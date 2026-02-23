@@ -87,7 +87,7 @@
                 {{ $status === 'completed' ? 'badge-success' : '' }}
                 {{ $status === 'cancelled' ? 'badge-error' : '' }}
             ">
-                {{ ucwords($status) }} Order
+                {{ ucwords($status) }}
             </span>
         @endif
     </div>
