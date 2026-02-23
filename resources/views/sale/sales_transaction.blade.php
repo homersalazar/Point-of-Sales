@@ -65,7 +65,7 @@
 
 
                 @foreach($products as $row)
-                    <div class="product-card card card-compact bg-base-100 w-full shadow-sm text-sm h-44 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all duration-200"
+                    <div class="product-card group relative bg-white rounded-2xl border border-base-200 hover:shadow-xl hover:-translate-y-1 transition-transform cursor-pointer overflow-hidden"
                         data-id="{{ $row->id }}"
                         data-name="{{ $row->name }}"
                         data-price="{{ $row->selling_price }}"
@@ -73,18 +73,19 @@
                         data-category="{{ $row->category_id }}"
                         onclick="addToOrder(this)"
                     >
-                        <figure class="h-24 overflow-hidden">
+                        <figure class="h-28 overflow-hidden">
                             <img src="{{ asset('storage/product/' . $row->image) }}"
                                 alt="{{ $row->name }}"
-                                class="h-full w-full object-fit" />
+                                class="h-full w-full object-cover group-hover:scale-110 transition duration-300"
+                            />
                         </figure>
-                        <div class="py-2 px-2.5">
-                            <h2 class="card-title text-base">{{ $row->name }}</h2>
-                            <p class="text-sm text-neutral">₱ {{ number_format($row->selling_price ,2) }}</p>
+                        <div class="p-2.5">
+                            <h2 class="text-base font-semibold truncate">{{ $row->name }}</h2>
+                            <p class="text-sm font-bold text-primary">₱ {{ number_format($row->selling_price,2) }}</p>
                         </div>
                     </div>
-
                 @endforeach
+
             </div>
         </div>
 
@@ -123,7 +124,7 @@
                 </div>
 
                 {{-- Cash Payment --}}
-                <div id="cashFields" class="flex flex-row gap-2 transition-all duration-300">
+                <div id="cashFields" class="flex flex-col gap-2 transition-all duration-300 mt-2">
                     {{-- Amount Received --}}
                     <div>
                         <label class="label py-0 mb-1">
@@ -155,7 +156,7 @@
                 </div>
 
                 {{-- Payment Method --}}
-                <div class="mt-4">
+                <div class="mt-2">
                     <label class="label py-0 mb-1.5">
                         <span class="label-text text-xs font-semibold text-base-content/50 uppercase tracking-wide">Payment method *</span>
                     </label>
