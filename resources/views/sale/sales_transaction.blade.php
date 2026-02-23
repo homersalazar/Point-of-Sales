@@ -2,7 +2,6 @@
 
 @section('content')
     @include('product.create_product_modal')
-    @include('sale.payment_modal')
     <div class="flex h-screen bg-base-200 overflow-hidden">
 
         {{-- ══════════════ LEFT PANEL ══════════════ --}}
@@ -123,18 +122,50 @@
                     </div>
                 </div>
 
+                {{-- Cash Payment --}}
+                <div id="cashFields" class="flex flex-row gap-2 transition-all duration-300">
+                    {{-- Amount Received --}}
+                    <div>
+                        <label class="label py-0 mb-1">
+                            <span class="label-text text-xs font-semibold text-base-content/50 uppercase tracking-wide">
+                            Received
+                            </span>
+                        </label>
+                        <input
+                            type="number"
+                            id="amount_received"
+                            class="input input-bordered input-sm w-full"
+                            placeholder="0.00"
+                            oninput="computeChange()">
+                    </div>
+
+                    {{-- Change --}}
+                    <div>
+                        <label class="label py-0 mb-1">
+                            <span class="label-text text-xs font-semibold text-base-content/50 uppercase tracking-wide">
+                                Change (Sukli)
+                            </span>
+                        </label>
+                        <input type="text"
+                            id="change_amount"
+                            class="input input-bordered input-sm w-full font-bold text-green-600"
+                            readonly>
+                    </div>
+
+                </div>
+
                 {{-- Payment Method --}}
                 <div class="mt-4">
                     <label class="label py-0 mb-1.5">
                         <span class="label-text text-xs font-semibold text-base-content/50 uppercase tracking-wide">Payment method *</span>
                     </label>
-                    <x-select name="payment_method" size="sm" class="mb-4">
+                    <x-select name="payment_method" size="sm" class="mb-4" onchange="togglePaymentMethod()">
                         <option value="cash">Cash</option>
-                        <option value="gcash">Gcash</option>
+                        <option value="gcash">GCash</option>
                     </x-select>
                 </div>
 
-                <button onclick="makeOrder()" class="btn btn-primary w-full font-bold text-base gap-2 rounded-xl">
+                <button onclick="confirmOrder()" class="btn btn-primary w-full font-bold text-base gap-2 rounded-xl">
                     Make Order
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/>
@@ -268,35 +299,10 @@
             });
         }
 
-        const makeOrder = () => {
-            if (!Object.keys(order).length) {
-                Swal.fire({
-                    title: 'Warning!',
-                    text: 'Please add items to your order first.',
-                    icon: 'warning',
-                    showConfirmButton: false,
-                    timer: 4000
-                });
-                return;
-            }
-
-            const subtotal = Object.values(order).reduce((sum, item) => {
-                return sum + (item.price * item.qty);
-            }, 0);
-
-            // Show total inside modal
-            document.getElementById('modal_total').value = fmt(subtotal);
-            document.getElementById('modal_total').dataset.total = subtotal;
-
-            document.getElementById('amount_received').value = '';
-            document.getElementById('change_amount').value = '';
-
-            // Open modal
-            document.getElementById('payment_modal').checked = true;
-        }
-
         const computeChange = () => {
-            const total = parseFloat(document.getElementById('modal_total').dataset.total);
+            const totalText = document.getElementById('total').textContent;
+            const total = parseFloat(totalText.replace(/[₱,]/g, ''));
+
             const received = parseFloat(document.getElementById('amount_received').value) || 0;
 
             const change = received - total;
@@ -305,15 +311,10 @@
 
             if (change >= 0) {
                 changeInput.value = fmt(change);
-
-                // GREEN when valid
                 changeInput.classList.remove('text-red-600');
                 changeInput.classList.add('text-green-600');
-
             } else {
                 changeInput.value = "Insufficient amount";
-
-                // RED when insufficient
                 changeInput.classList.remove('text-green-600');
                 changeInput.classList.add('text-red-600');
             }
@@ -321,7 +322,9 @@
 
         const confirmOrder = () => {
 
-            const total = parseFloat(document.getElementById('modal_total').dataset.total);
+            const totalText = document.getElementById('total').textContent;
+            const total = parseFloat(totalText.replace(/[₱,]/g, ''));
+
             const received = parseFloat(document.getElementById('amount_received').value) || 0;
 
             if (received < total) {
@@ -335,12 +338,6 @@
                 return;
             }
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            });
-
             const customer_id = document.querySelector('select[name="customer_id"]').value;
             const payment_method = document.querySelector('select[name="payment_method"]').value;
 
@@ -348,6 +345,9 @@
                 url: "{{ route('sale.store') }}",
                 method: "POST",
                 contentType: 'application/json',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
                 data: JSON.stringify({
                     customer_id,
                     payment_method,
@@ -357,8 +357,6 @@
                 }),
                 success: function(data) {
 
-                    document.getElementById('payment_modal').checked = false;
-
                     Swal.fire({
                         title: 'Success!',
                         text: data.message,
@@ -366,18 +364,41 @@
                         timer: 3000,
                         showConfirmButton: false
                     }).then(() => {
+
+                        // reset everything
                         Object.keys(order).forEach(id => delete order[id]);
                         renderOrder();
-                    });
-                },
-                error: function(xhr){
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Something went wrong.',
-                        icon: 'error'
+                        document.getElementById('amount_received').value = '';
+                        document.getElementById('change_amount').value = '';
                     });
                 }
             });
+        };
+
+        document.addEventListener('DOMContentLoaded', togglePaymentMethod);
+        function togglePaymentMethod() {
+            const method = document.querySelector('select[name="payment_method"]').value;
+            const cashFields = document.getElementById('cashFields');
+
+            if (method === 'gcash') {
+                // Hide cash fields
+                cashFields.classList.add('hidden');
+
+                // Auto-fill received amount as exact total
+                const totalText = document.getElementById('total').textContent;
+                const total = parseFloat(totalText.replace(/[₱,]/g, ''));
+
+                document.getElementById('amount_received').value = total;
+                document.getElementById('change_amount').value = fmt(0);
+                document.getElementById('change_amount').classList.remove('text-red-600');
+                document.getElementById('change_amount').classList.add('text-green-600');
+            } else {
+                // Show cash fields
+                cashFields.classList.remove('hidden');
+
+                document.getElementById('amount_received').value = '';
+                document.getElementById('change_amount').value = '';
+            }
         }
     </script>
 @endsection
