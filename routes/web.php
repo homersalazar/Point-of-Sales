@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
+});
+
+Route::prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 });
 
 Route::prefix('product')->group(function () {

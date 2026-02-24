@@ -22,6 +22,9 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.all.min.js"></script>
 
+        {{-- Graph Js --}}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     </head>
         <body class="bg-base-200 min-h-screen flex">
@@ -46,10 +49,10 @@
             <nav class="flex-1 py-3 px-2 space-y-0.5">
 
                 <!-- Dashboard -->
-                <div class="nav-item" data-tip="Dashboard">
+                <a href="/dashboard" class="nav-item" data-tip="Dashboard">
                     <i class="fa-solid fa-gauge-high nav-icon"></i>
                     <span class="nav-label">Dashboard</span>
-                </div>
+                </a>
 
                 <!-- Inventory -->
                 <div>
