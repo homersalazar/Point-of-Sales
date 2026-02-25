@@ -134,10 +134,23 @@
                     </div>
                 </div>
 
-                <!-- Wallet -->
-                <div class="nav-item" data-tip="Wallet">
-                    <i class="fa-solid fa-wallet nav-icon"></i>
-                    <span class="nav-label">Wallet</span>
+                <!-- Expense -->
+                <div>
+                    <div class="nav-item" data-tip="Expenses" onclick="toggleMenu('expenses')">
+                        <i class="fa-solid fa-receipt nav-icon"></i>
+                        <span class="nav-label" style="flex:1">Expenses</span>
+                        <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-expenses"></i>
+                    </div>
+                    <div id="submenu-expenses" class="submenu closed pl-3 mt-0.5 space-y-0.5">
+                        <a href="/expense/exp_category" class="nav-item" data-tip="Expense Transactions">
+                            <i class="fa-solid fa-file-invoice nav-icon" style="font-size:13px"></i>
+                            <span class="nav-label">Expense Transactions</span>
+                        </a>
+                        <a href="/expense/exp_category" class="nav-item" data-tip="Expense Categories">
+                            <i class="fa-solid fa-tag nav-icon" style="font-size:13px"></i>
+                            <span class="nav-label">Expense Categories</span>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Report -->

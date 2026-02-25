@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -54,4 +55,17 @@ Route::prefix('customer')->group(function () {
     Route::post('/create_customer', [CustomerController::class, 'create_customer'])->name('customer.create_customer');
     Route::put('/update_customer/{id}', [CustomerController::class, 'update_customer'])->name('customer.update_customer');
     Route::delete('/delete_customer/{id}', [CustomerController::class, 'delete_customer'])->name('customer.delete_customer');
+});
+
+
+Route::prefix('expense')->group(function () {
+    // Route::get('/', [CustomerController::class, 'index'])->name('customer.index');
+    // Route::post('/create_customer', [CustomerController::class, 'create_customer'])->name('customer.create_customer');
+    // Route::put('/update_customer/{id}', [CustomerController::class, 'update_customer'])->name('customer.update_customer');
+    // Route::delete('/delete_customer/{id}', [CustomerController::class, 'delete_customer'])->name('customer.delete_customer');
+
+    Route::get('/exp_category', [ExpenseController::class, 'exp_category'])->name('expense.exp_category');
+    Route::post('/create_exp_category', [ExpenseController::class, 'create_exp_category'])->name('expense.create_exp_category');
+    Route::put('/update_exp_category/{id}', [ExpenseController::class, 'update_exp_category'])->name('expense.update_exp_category');
+    Route::delete('/delete_expense_category/{id}', [ExpenseController::class, 'delete_expense_category'])->name('expense.delete_expense_category');
 });
