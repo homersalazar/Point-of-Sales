@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,6 +58,12 @@ Route::prefix('customer')->group(function () {
     Route::delete('/delete_customer/{id}', [CustomerController::class, 'delete_customer'])->name('customer.delete_customer');
 });
 
+Route::prefix('supplier')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::post('/create_supplier', [SupplierController::class, 'create_supplier'])->name('supplier.create_supplier');
+    Route::put('/update_supplier/{id}', [SupplierController::class, 'update_supplier'])->name('supplier.update_supplier');
+    Route::delete('/delete_supplier/{id}', [SupplierController::class, 'delete_supplier'])->name('supplier.delete_supplier');
+});
 
 Route::prefix('expense')->group(function () {
     Route::get('/', [ExpenseController::class, 'index'])->name('expense.index');

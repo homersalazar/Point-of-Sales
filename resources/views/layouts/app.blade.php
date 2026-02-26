@@ -112,10 +112,10 @@
                             <i class="fa-solid fa-file-lines nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Purchase Orders</span>
                         </div>
-                        <div class="nav-item" data-tip="Suppliers">
+                        <a href="/supplier" class="nav-item" data-tip="Suppliers">
                             <i class="fa-solid fa-truck nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Suppliers</span>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
