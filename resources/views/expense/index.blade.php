@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('expense.create_exp_category_modal')
+    @include('expense.create_expense_modal')
+    @include('expense.update_expense_modal')
 
     <div class="flex flex-col w-full space-y-6">
 
@@ -11,10 +12,10 @@
             <!-- Left Side -->
             <div>
                 <h1 class="text-2xl font-bold text-base-content">
-                    Expense Categories
+                    Expense
                 </h1>
                 <p class="text-sm text-base-content/50 mt-1">
-                    Manage your expense categories.
+                    Manage your expense.
                 </p>
             </div>
 
@@ -24,9 +25,9 @@
                 <!-- Search -->
                 <div class="w-full md:w-72">
                     <x-search-input
-                        url="{{ route('expense.exp_category') }}"
-                        placeholder="Search categories"
-                        target="categoryTable"
+                        url="{{ route('expense.index') }}"
+                        placeholder="Search"
+                        target="expenseTable"
                     />
                 </div>
 
@@ -34,9 +35,9 @@
                 <x-button
                     color="primary"
                     icon="fa-solid fa-plus"
-                    click="add_exp_category"
+                    click="add_expense"
                 >
-                Add Exp. Category
+                Add Expense
             </x-button>
             </div>
         </div>
@@ -46,25 +47,25 @@
 
         <!-- Content Card -->
         <div class="bg-base-100 border border-base-200 rounded-2xl shadow-sm p-6">
-            @if ($exp_categories->isEmpty())
+            @if ($expenses->isEmpty())
                 <div class="flex flex-col items-center justify-center py-16 text-center">
                     <div class="w-14 h-14 rounded-full bg-base-200 flex items-center justify-center mb-4">
                         <i class="fa-solid fa-box text-base-content/40 text-xl"></i>
                     </div>
                     <h2 class="font-semibold text-base-content text-lg">
-                        No Category Found
+                        No Expense Found
                     </h2>
                     <p class="text-sm text-base-content/50 mt-1 mb-4">
-                        Start by adding your first category.
+                        Start by adding your first expense.
                     </p>
 
-                    <x-button color="primary" click="add_category">
-                        Add Category
+                    <x-button color="primary" click="add_expense">
+                        Add Expense
                     </x-button>
                 </div>
             @else
                 <x-entries />
-                @include('expense.partials.expense_category_table', ['exp_categories' => $exp_categories])
+                @include('expense.partials.expense_table', ['expenses' => $expenses])
             @endif
         </div>
     </div>

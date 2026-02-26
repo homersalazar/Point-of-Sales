@@ -142,7 +142,7 @@
                         <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-expenses"></i>
                     </div>
                     <div id="submenu-expenses" class="submenu closed pl-3 mt-0.5 space-y-0.5">
-                        <a href="/expense/exp_category" class="nav-item" data-tip="Expense Transactions">
+                        <a href="/expense" class="nav-item" data-tip="Expense Transactions">
                             <i class="fa-solid fa-file-invoice nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Expense Transactions</span>
                         </a>

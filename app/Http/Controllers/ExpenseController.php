@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expense;
 use App\Models\Expense_category;
 use App\Services\ExpenseCategoryService;
 use App\Services\ExpenseService;
@@ -20,7 +21,98 @@ class ExpenseController extends Controller
         $this->expenseCategoryService = $expenseCategoryService;
     }
 
-    // Expense Category
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+
+        if ($perPage == -1) {
+            $perPage = Expense::count();
+        }
+
+        $expenses = $this->expenseService->paginate($search, $perPage);
+
+        if ($request->ajax()) {
+            return view('expense.partials.expense_table', compact('expenses'))->render();
+        }
+
+        $expense_categories = $this->expenseCategoryService->getAll();
+
+        return view('expense.index', compact('expenses', 'search', 'perPage', 'expense_categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'expense_date' => 'required|date',
+            'expense_category_id' => 'required|exists:expense_categories,id',
+            'description' => 'nullable|string'
+        ]);
+
+        try {
+            $validated['created_by'] = 1;
+            $this->expenseService->store($validated);
+            return redirect()->back()->with('success', 'Expense created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Something went wrong. Please try again later.'
+            ]);
+        }
+    }
+
+    public function update_status(Request $request, $id)
+    {
+        $request->validate([
+            'action' => 'required|in:cancelled,completed',
+        ]);
+
+        $result = $this->expenseService->updateStatus($id, $request->action);
+
+        return response()->json($result, $result['success'] ? 200 : 500);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'expense_date' => 'required|date',
+            'expense_category_id' => 'required|exists:expense_categories,id',
+            'description' => 'nullable|string'
+        ]);
+
+        try {
+            $this->expenseService->update($validated, $id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Expense updated successfully.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong. Please try again later.'
+            ], 500);
+        }
+    }
+
+    public function delete_expense($id)
+    {
+        try {
+            $this->expenseService->delete($id);
+            $response = [
+                'status' => 'success',
+                'message' => 'Expense deleted successfully.'
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong. Please try again later.'
+            ], 500);
+        }
+    }
+
+    // Expense Category -----------------------------------------------------------------------------------------------------
     public function exp_category(Request $request)
     {
         $search = $request->input('search');

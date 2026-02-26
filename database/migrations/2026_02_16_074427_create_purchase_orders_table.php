@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('po_number')->unique();
             $table->foreignId('supplier_id')->constrained()->cascadeOnDelete();
             $table->decimal('total_amount', 12, 2);
-            $table->string('status')->default('pending'); // pending, received
+            $table->string('status')->default('pending'); // pending, completed, cancelled
             $table->timestamps();
         });
     }

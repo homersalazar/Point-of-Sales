@@ -59,10 +59,11 @@ Route::prefix('customer')->group(function () {
 
 
 Route::prefix('expense')->group(function () {
-    // Route::get('/', [CustomerController::class, 'index'])->name('customer.index');
-    // Route::post('/create_customer', [CustomerController::class, 'create_customer'])->name('customer.create_customer');
-    // Route::put('/update_customer/{id}', [CustomerController::class, 'update_customer'])->name('customer.update_customer');
-    // Route::delete('/delete_customer/{id}', [CustomerController::class, 'delete_customer'])->name('customer.delete_customer');
+    Route::get('/', [ExpenseController::class, 'index'])->name('expense.index');
+    Route::post('/create_expense', [ExpenseController::class, 'store'])->name('expense.create_expense');
+    Route::put('/update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
+    Route::put('/update_status/{id}', [ExpenseController::class, 'update_status'])->name('expense.update_status');
+    Route::delete('/delete_expense/{id}', [ExpenseController::class, 'delete_expense'])->name('expense.delete_expense');
 
     Route::get('/exp_category', [ExpenseController::class, 'exp_category'])->name('expense.exp_category');
     Route::post('/create_exp_category', [ExpenseController::class, 'create_exp_category'])->name('expense.create_exp_category');

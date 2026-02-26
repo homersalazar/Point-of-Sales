@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('expense_date');
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->string('status')->default('pending'); // pending, completed, cancelled
             $table->timestamps();
         });
     }
