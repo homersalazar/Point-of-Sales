@@ -8,17 +8,8 @@
                 <td>{{ $row->supplier_name }}</td>
                 <td>₱{{ number_format($row->total_amount, 2) }}</td>
                 <td>
-                    @php
-                        $status = strtolower($row->status);
-                    @endphp
+                    <x-status :status="$row->status" />
 
-                    <span class="badge font-semibold text-white
-                        {{ $status === 'completed' ? 'badge-success' : '' }}
-                        {{ $status === 'cancelled' ? 'badge-error' : '' }}
-                        {{ $status === 'pending' ? 'badge-info' : '' }}">
-
-                        {{ ucwords($status) }}
-                    </span>
                 </td>
                 <td>
                     <div class="flex flex-row gap-2 w-full">

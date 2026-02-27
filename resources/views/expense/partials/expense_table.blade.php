@@ -9,17 +9,7 @@
                 <td>{{ date('F j, Y', strtotime($row->expense_date)) }}</td>
                 <td>{{ $row->description }}</td>
                 <td>
-                    @php
-                        $status = strtolower($row->status);
-                    @endphp
-
-                    <span class="badge font-semibold text-white
-                        {{ $status === 'completed' ? 'badge-success' : '' }}
-                        {{ $status === 'cancelled' ? 'badge-error' : '' }}
-                        {{ $status === 'pending' ? 'badge-info' : '' }}">
-
-                        {{ ucwords($status) }}
-                    </span>
+                    <x-status :status="$row->status" />
                 </td>
                 <td>
                     <div class="flex flex-row gap-2 w-full">

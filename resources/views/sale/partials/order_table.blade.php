@@ -12,17 +12,7 @@
                 <td>{{ ucwords($row['payment_status']) }}</td>
                 <td>₱{{ number_format($row['total_amount'],2) }}</td>
                 <td>
-                    @php
-                        $status = strtolower($row['sales_status']);
-                    @endphp
-
-                    <span class="badge font-semibold text-white
-                        {{ $status === 'completed' ? 'badge-success' : '' }}
-                        {{ $status === 'cancelled' ? 'badge-error' : '' }}
-                        {{ $status === 'pending' ? 'badge-info' : '' }}">
-
-                        {{ ucwords($status) }}
-                    </span>
+                    <x-status :status="$row['sales_status']" />
                 </td>
                 <td>Details</td>
             </tr>

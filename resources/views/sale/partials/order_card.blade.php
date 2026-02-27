@@ -79,16 +79,7 @@
                 </x-button>
             </div>
         @else
-            @php
-                $status = strtolower($row['sales_status']);
-            @endphp
-
-            <span class="badge font-semibold text-white
-                {{ $status === 'completed' ? 'badge-success' : '' }}
-                {{ $status === 'cancelled' ? 'badge-error' : '' }}
-            ">
-                {{ ucwords($status) }}
-            </span>
+            <x-status :status="$row['sales_status']" />
         @endif
     </div>
 @empty
