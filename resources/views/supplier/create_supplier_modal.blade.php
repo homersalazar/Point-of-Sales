@@ -26,7 +26,7 @@
             <x-text-input
                 name="name"
                 size="sm"
-                placeholder="Enter Customer name"
+                placeholder="Enter Supplier name"
                 required
             />
         </div>

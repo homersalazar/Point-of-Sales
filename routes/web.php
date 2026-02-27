@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,15 @@ Route::prefix('customer')->group(function () {
     Route::post('/create_customer', [CustomerController::class, 'create_customer'])->name('customer.create_customer');
     Route::put('/update_customer/{id}', [CustomerController::class, 'update_customer'])->name('customer.update_customer');
     Route::delete('/delete_customer/{id}', [CustomerController::class, 'delete_customer'])->name('customer.delete_customer');
+});
+
+Route::prefix('purchase_order')->group(function () {
+    Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order.index');
+    Route::get('/create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
+    Route::post('/fetch_product', [PurchaseOrderController::class, 'fetch_product'])->name('purchase_order.fetch_product');
+    Route::post('/store_purchase_order', [PurchaseOrderController::class, 'store_purchase_order'])->name('purchase_order.store_purchase_order');
+    Route::put('/update_status/{id}', [PurchaseOrderController::class, 'update_status'])->name('purchase_order.update_status');
+    Route::post('/items', [PurchaseOrderController::class, 'items'])->name('purchase_order.items');
 });
 
 Route::prefix('supplier')->group(function () {

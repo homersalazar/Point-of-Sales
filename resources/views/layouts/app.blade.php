@@ -108,10 +108,10 @@
                         <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-purchase"></i>
                     </div>
                     <div id="submenu-purchase" class="submenu closed pl-3 mt-0.5 space-y-0.5">
-                        <div class="nav-item" data-tip="Purchase Orders">
+                        <a href="/purchase_order" class="nav-item" data-tip="Purchase Orders">
                             <i class="fa-solid fa-file-lines nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Purchase Orders</span>
-                        </div>
+                        </a>
                         <a href="/supplier" class="nav-item" data-tip="Suppliers">
                             <i class="fa-solid fa-truck nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Suppliers</span>

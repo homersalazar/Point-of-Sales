@@ -48,4 +48,13 @@ class ProductRepository extends BaseRepository
             ORDER BY id ASC
         ");
     }
+
+    public function searchByName($name)
+    {
+        return $this->model
+            ->where('name', 'like', "%{$name}%")
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
+    }
 }

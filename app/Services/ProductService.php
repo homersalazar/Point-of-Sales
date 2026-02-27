@@ -24,4 +24,9 @@ class ProductService extends BaseService
     {
         return $this->productRepo->countByCategory();
     }
+
+    public function searchByName($name)
+    {
+        return $this->productRepo->searchByName($name);
+    }
 }

@@ -12,7 +12,7 @@
                 @endforeach
             </tr>
         </thead>
-        <tbody>
+        <tbody id="{{ $id }}-body">
             {{ $slot }}
         </tbody>
     </table>
