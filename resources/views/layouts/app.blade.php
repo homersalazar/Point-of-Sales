@@ -116,6 +116,10 @@
                             <i class="fa-solid fa-truck nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Suppliers</span>
                         </a>
+                        <a href="/unit" class="nav-item" data-tip="Unit">
+                            <i class="fa-solid fa-tags nav-icon" style="font-size:13px"></i>
+                            <span class="nav-label">Unit</span>
+                        </a>
                     </div>
                 </div>
 
@@ -182,10 +186,6 @@
                         <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-settings"></i>
                     </div>
                     <div id="submenu-settings" class="submenu closed pl-3 mt-0.5 space-y-0.5">
-                        <div class="nav-item" data-tip="Unit">
-                            <i class="fa-solid fa-tags nav-icon" style="font-size:13px"></i>
-                            <span class="nav-label">Unit</span>
-                        </div>
                         <div class="nav-item" data-tip="Role">
                             <i class="fa-solid fa-user-gear nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Role</span>

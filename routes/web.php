@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,12 @@ Route::prefix('category')->group(function () {
     Route::delete('/delete_category/{id}', [CategoryController::class, 'delete_category'])->name('category.delete_category');
 });
 
+Route::prefix('unit')->group(function () {
+    Route::get('/', [UnitController::class, 'index'])->name('unit.index');
+    Route::post('/create_unit', [UnitController::class, 'create_unit'])->name('unit.create_unit');
+    Route::put('/update_unit/{id}', [UnitController::class, 'update_unit'])->name('unit.update_unit');
+    Route::delete('/delete_unit/{id}', [UnitController::class, 'delete_unit'])->name('unit.delete_unit');
+});
 
 Route::prefix('sale')->group(function () {
     Route::get('/', [SaleController::class, 'sales_transaction'])->name('sale.sales_transaction');
