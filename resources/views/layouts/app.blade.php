@@ -78,9 +78,9 @@
                     <div class="nav-item" data-tip="Sales" onclick="toggleMenu('sales')">
                         <i class="fa-solid fa-bag-shopping nav-icon"></i>
                         <span class="nav-label" style="flex:1">Sales</span>
-                        <i class="fa-solid fa-chevron-down caret-icon open text-base-content/30" id="caret-sales"></i>
+                        <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-sales"></i>
                     </div>
-                    <div id="submenu-sales" class="submenu pl-3 mt-0.5 space-y-0.5">
+                    <div id="submenu-sales" class="submenu pl-3 mt-0.5 space-y-0.5 closed">
                         <a href="/sale" class="nav-item" data-tip="Sales Transaction">
                             <i class="fa-solid fa-cart-shopping nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Sales Transaction</span>
@@ -164,7 +164,7 @@
                         <div class="nav-item" data-tip="Sales Report">
                             <i class="fa-solid fa-chart-line nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Sales Report</span>
-                            </div>
+                        </div>
                         <div class="nav-item" data-tip="Analytics">
                             <i class="fa-solid fa-chart-pie nav-icon" style="font-size:13px"></i>
                             <span class="nav-label">Analytics</span>
@@ -175,9 +175,26 @@
 
             <!-- Bottom -->
             <div class="border-t border-base-200 p-2 space-y-0.5">
-                <div class="nav-item" data-tip="Settings">
-                    <i class="fa-solid fa-gear nav-icon"></i>
-                    <span class="nav-label">Settings</span>
+                <div>
+                    <div class="nav-item" data-tip="Settings" onclick="toggleMenu('settings')">
+                        <i class="fa-solid fa-gear nav-icon"></i>
+                        <span class="nav-label" style="flex:1">Settings</span>
+                        <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-settings"></i>
+                    </div>
+                    <div id="submenu-settings" class="submenu closed pl-3 mt-0.5 space-y-0.5">
+                        <div class="nav-item" data-tip="Unit">
+                            <i class="fa-solid fa-tags nav-icon" style="font-size:13px"></i>
+                            <span class="nav-label">Unit</span>
+                        </div>
+                        <div class="nav-item" data-tip="Role">
+                            <i class="fa-solid fa-user-gear nav-icon" style="font-size:13px"></i>
+                            <span class="nav-label">Role</span>
+                        </div>
+                        <div class="nav-item" data-tip="Permission">
+                            <i class="fa-solid fa-user-shield nav-icon" style="font-size:13px"></i>
+                            <span class="nav-label">Permission</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-tip="Log Out">
                     <i class="fa-solid fa-arrow-right-from-bracket nav-icon"></i>

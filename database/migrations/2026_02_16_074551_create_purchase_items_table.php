@@ -13,14 +13,28 @@ return new class extends Migration
     {
         Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_order_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+
+            $table->foreignId('purchase_order_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('product_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
             $table->integer('quantity');
-            $table->decimal('cost_price', 12, 2);
+
+            // NEW COLUMNS
+            $table->foreignId('unit_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->decimal('unit_price', 12, 2);   // price per unit
             $table->decimal('subtotal', 12, 2);
+
             $table->timestamps();
         });
-    }
+}
 
     /**
      * Reverse the migrations.
