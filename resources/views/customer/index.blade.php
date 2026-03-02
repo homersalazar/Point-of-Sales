@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('customer.create_customer_modal')
-    @include('customer.update_customer_modal')
+    @include('customer.partials.create_customer_modal')
+    @include('customer.partials.update_customer_modal')
 
     <div class="flex flex-col w-full space-y-6">
 

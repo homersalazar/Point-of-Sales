@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('purchase_order.view_purchase_order_modal')
+    @include('purchase_order.partials.view_purchase_order_modal')
 
     <div class="flex flex-col w-full space-y-6">
 

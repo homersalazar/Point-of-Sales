@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('product.create_product_modal')
-    @include('product.update_product_modal')
+    @include('product.partials.create_product_modal')
+    @include('product.partials.update_product_modal')
 
     <div class="flex flex-col w-full space-y-6">
 

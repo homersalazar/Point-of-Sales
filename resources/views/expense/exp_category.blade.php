@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('expense.create_exp_category_modal')
-    @include('expense.update_exp_category_modal')
+    @include('expense.partials.create_exp_category_modal')
+    @include('expense.partials.update_exp_category_modal')
 
     <div class="flex flex-col w-full space-y-6">
 
