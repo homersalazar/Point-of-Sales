@@ -84,4 +84,19 @@ class PurchaseOrderService extends BaseService
             ->select('products.name as product_name', 'purchase_items.quantity', 'purchase_items.cost_price', 'purchase_items.subtotal')
             ->get();
     }
+
+    public function totalPurchaseOrders($startDate = null, $endDate = null)
+    {
+        return $this->purchaseOrderRepo->totalPurchaseOrders($startDate, $endDate);
+    }
+
+    public function totalPurchaseOrdersLastMonth()
+    {
+        return $this->purchaseOrderRepo->totalPurchaseOrdersLastMonth();
+    }
+
+    public function monthlyPurchases()
+    {
+        return $this->purchaseOrderRepo->monthlyPurchases();
+    }
 }

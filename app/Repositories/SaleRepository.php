@@ -89,4 +89,41 @@ class SaleRepository extends BaseRepository
             ],
         ]);
     }
+
+    public function totalSales($startdate = null, $enddate = null)
+    {
+        $start = $startdate
+            ? Carbon::parse($startdate)->startOfDay()
+            : Carbon::now()->startOfMonth();   // ✅ start of current month
+
+        $end = $enddate
+            ? Carbon::parse($enddate)->endOfDay()
+            : Carbon::now()->endOfMonth();     // ✅ end of current month
+
+        return Sales::whereBetween('created_at', [$start, $end])
+                    ->where('sales_status', 'completed')
+                    ->sum('total_amount');
+    }
+
+    public function totalSalesLastMonth()
+    {
+        return Sales::whereBetween('created_at', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])
+            ->where('sales_status', 'completed')
+            ->sum('total_amount');
+    }
+
+    public function monthlySales($year = null)
+    {
+        $year = $year ?? now()->year;
+
+        return Sales::selectRaw('MONTH(created_at) as month, SUM(total_amount) as total')
+                    ->whereYear('created_at', $year)
+                    ->where('sales_status', 'completed')
+                    ->groupBy('month')
+                    ->pluck('total', 'month')
+                    ->toArray();
+    }
 }

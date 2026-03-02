@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Purchase_order;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PurchaseOrderRepository extends BaseRepository
 {
@@ -40,5 +40,42 @@ class PurchaseOrderRepository extends BaseRepository
         $lastId = $lastOrder ? $lastOrder->id : 0;
 
         return 'PO-' . $year . '-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
+    }
+
+    public function totalPurchaseOrders($startdate = null, $enddate = null)
+    {
+        $start = $startdate
+            ? Carbon::parse($startdate)->startOfDay()
+            : Carbon::now()->startOfMonth();   // ✅ start of current month
+
+        $end = $enddate
+            ? Carbon::parse($enddate)->endOfDay()
+            : Carbon::now()->endOfMonth();     // ✅ end of current month
+
+        return Purchase_order::whereBetween('created_at', [$start, $end])
+                    ->where('status', 'completed')
+                    ->sum('total_amount');
+    }
+
+    public function totalPurchaseOrdersLastMonth()
+    {
+        return Purchase_order::whereBetween('created_at', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])
+            ->where('status', 'completed')
+            ->sum('total_amount');
+    }
+
+    public function monthlyPurchases($year = null)
+    {
+        $year = $year ?? now()->year;
+
+        return Purchase_order::selectRaw('MONTH(created_at) as month, SUM(total_amount) as total')
+                    ->whereYear('created_at', $year)
+                    ->where('status', 'completed')
+                    ->groupBy('month')
+                    ->pluck('total', 'month')
+                    ->toArray();
     }
 }

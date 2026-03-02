@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Sale_item;
 use App\Repositories\SaleRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class SaleService extends BaseService
 {
@@ -82,5 +81,20 @@ class SaleService extends BaseService
         return $updated
             ? ['success' => true, 'message' => 'Order updated successfully.']
             : ['success' => false, 'message' => 'Failed to update order.'];
+    }
+
+    public function totalSales($startDate = null, $endDate = null)
+    {
+        return $this->saleRepo->totalSales($startDate, $endDate);
+    }
+
+    public function totalSalesLastMonth()
+    {
+        return $this->saleRepo->totalSalesLastMonth();
+    }
+
+    public function monthlySales()
+    {
+        return $this->saleRepo->monthlySales();
     }
 }

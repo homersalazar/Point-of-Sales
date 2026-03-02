@@ -59,8 +59,8 @@
                         Start by adding your first category.
                     </p>
 
-                    <x-button color="primary" click="add_category">
-                        Add Category
+                    <x-button color="primary" click="add_exp_category">
+                        Add Expense Category
                     </x-button>
                 </div>
             @else

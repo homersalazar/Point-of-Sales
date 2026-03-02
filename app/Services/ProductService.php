@@ -29,4 +29,9 @@ class ProductService extends BaseService
     {
         return $this->productRepo->searchByName($name);
     }
+
+    public function countByStockStatus()
+    {
+        return $this->productRepo->countByStockStatus();
+    }
 }

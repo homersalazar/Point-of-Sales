@@ -49,6 +49,15 @@ class ProductRepository extends BaseRepository
         ");
     }
 
+    public function countByStockStatus()
+    {
+        return DB::table('products')
+            ->select('name', 'stock')
+            ->where('stock', '<', 10)
+            ->orderBy('stock', 'asc')
+            ->paginate(10);
+    }
+
     public function searchByName($name)
     {
         return $this->model

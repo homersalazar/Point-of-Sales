@@ -29,4 +29,19 @@ class ExpenseService extends BaseService
             ? ['success' => true, 'message' => 'Expense status updated successfully.']
             : ['success' => false, 'message' => 'Failed to update expense.'];
     }
+
+    public function totalExpenses($startDate = null, $endDate = null)
+    {
+        return $this->expenseRepo->totalExpenses($startDate, $endDate);
+    }
+
+    public function totalExpensesLastMonth()
+    {
+        return $this->expenseRepo->totalExpensesLastMonth();
+    }
+
+    public function monthlyExpenses()
+    {
+        return $this->expenseRepo->monthlyExpenses();
+    }
 }

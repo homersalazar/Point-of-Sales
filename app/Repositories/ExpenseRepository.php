@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Expense;
+use Carbon\Carbon;
 
 class ExpenseRepository extends BaseRepository
 {
@@ -31,5 +32,42 @@ class ExpenseRepository extends BaseRepository
             )
             ->paginate($perPage)
             ->appends(['search' => $search]);
+    }
+
+    public function totalExpenses($startdate = null, $enddate = null)
+    {
+        $start = $startdate
+            ? Carbon::parse($startdate)->startOfDay()
+            : Carbon::now()->startOfMonth();   // ✅ start of current month
+
+        $end = $enddate
+            ? Carbon::parse($enddate)->endOfDay()
+            : Carbon::now()->endOfMonth();     // ✅ end of current month
+
+        return Expense::whereBetween('expense_date', [$start, $end])
+                    ->where('status', 'completed')
+                    ->sum('amount');
+    }
+
+    public function totalExpensesLastMonth()
+    {
+        return Expense::whereBetween('expense_date', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])
+            ->where('status', 'completed')
+            ->sum('amount');
+    }
+
+    public function monthlyExpenses($year = null)
+    {
+        $year = $year ?? now()->year;
+
+        return Expense::selectRaw('MONTH(expense_date) as month, SUM(amount) as total')
+                    ->whereYear('expense_date', $year)
+                    ->where('status', 'completed')
+                    ->groupBy('month')
+                    ->pluck('total', 'month')
+                    ->toArray();
     }
 }
