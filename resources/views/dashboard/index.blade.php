@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('category.create_category_modal')
-    @include('category.update_category_modal')
-
     <div class="flex flex-col w-full space-y-6">
 
         <!-- Header -->

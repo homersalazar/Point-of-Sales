@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('product.create_product_modal')
+    @include('product.partials.create_product_modal')
     <div class="flex h-screen bg-base-200 overflow-hidden">
 
         {{-- ══════════════ LEFT PANEL ══════════════ --}}
