@@ -34,4 +34,15 @@ class ProductService extends BaseService
     {
         return $this->productRepo->countByStockStatus();
     }
+
+    public function countAllProducts()
+    {
+        return $this->productRepo->model->count();
+    }
+
+    public function paginateWithStock($search = null, $perPage = 10)
+    {
+        return $this->productRepo->paginate($search, $perPage);
+    }
+
 }

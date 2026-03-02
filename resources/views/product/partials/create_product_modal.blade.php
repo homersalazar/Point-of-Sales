@@ -38,48 +38,16 @@
             />
         </div>
 
-        {{-- Prices Row --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-            <div>
-                <label class="label">
-                    <span class="label-text">Cost Price</span>
-                </label>
-                <x-text-input
-                    name="cost_price"
-                    type="number"
-                    step="0.01"
-                    placeholder="0.00"
-                    size="sm"
-                    required
-                />
-            </div>
-
-            <div>
-                <label class="label">
-                    <span class="label-text">Selling Price</span>
-                </label>
-                <x-text-input
-                    name="selling_price"
-                    type="number"
-                    step="0.01"
-                    placeholder="0.00"
-                    size="sm"
-                    required
-                />
-            </div>
-
-        </div>
-
-        {{-- Stock --}}
+        {{-- Selling Price --}}
         <div>
             <label class="label">
-                <span class="label-text">Stock</span>
+                <span class="label-text">Selling Price</span>
             </label>
             <x-text-input
-                name="stock"
+                name="selling_price"
                 type="number"
-                placeholder="0"
+                step="0.01"
+                placeholder="0.00"
                 size="sm"
                 required
             />

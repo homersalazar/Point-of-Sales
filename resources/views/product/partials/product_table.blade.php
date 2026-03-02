@@ -1,7 +1,7 @@
 
 <div id="productTable">
     <x-table
-        :headers="['', 'Name', 'SKU', 'Cost Price', 'Selling Price', 'Stock', 'Action']"
+        :headers="['', 'Name', 'SKU', 'Selling Price', 'Stock', 'Action']"
     >
         @forelse ($products as $row)
             <tr>
@@ -24,15 +24,30 @@
                     </div>
                 </td>
                 <td>{{ $row->sku }}</td>
-                <td>₱{{ $row->cost_price }}</td>
                 <td>₱{{ $row->selling_price }}</td>
-                <td>{{ $row->stock }}</td>
+                <td>
+                    @php
+                        $color = 'bg-gray-100 text-gray-700';
+
+                        if ($row->stock == 0) {
+                            $color = 'bg-red-100 text-red-700';
+                        } elseif ($row->stock <= 5) {
+                            $color = 'bg-yellow-100 text-yellow-700';
+                        } elseif ($row->stock >= 10) {
+                            $color = 'bg-green-100 text-green-700';
+                        }
+                    @endphp
+
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $color }}">
+                        {{ $row->stock }}
+                    </span>
+                </td>
                 <td>
                     <div class="flex flex-row gap-2 w-full">
                         <x-button
                             color="info"
                             outline
-                            onclick="update_product('{{ $row->id }}', '{{ $row->category_id }}', '{{ $row->name }}', '{{ $row->cost_price }}', '{{ $row->selling_price }}', '{{ $row->stock }}', '{{ $row->image }}')"
+                            onclick="update_product('{{ $row->id }}', '{{ $row->category_id }}', '{{ $row->name }}', '{{ $row->selling_price }}', '{{ $row->image }}')"
                         >
                             <i class="fa-solid fa-pen-to-square"></i>
                         </x-button>
@@ -62,7 +77,7 @@
 </div>
 
 <script>
-    const update_product = (prod_id, ctgy_id, prod_name, cost_price, selling_price, stock, image) => {
+    const update_product = (prod_id, ctgy_id, prod_name, selling_price, image) => {
         // Open modal
         document.getElementById('update_product_modal').checked = true;
 
@@ -72,9 +87,7 @@
 
         // Fill inputs
         document.getElementById('name').value = prod_name;
-        document.getElementById('cost_price').value = cost_price;
         document.getElementById('selling_price').value = selling_price;
-        document.getElementById('stock').value = stock;
         document.getElementById('image').value = '';
 
         // Optional: show current image in modal

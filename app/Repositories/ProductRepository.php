@@ -14,15 +14,46 @@ class ProductRepository extends BaseRepository
 
     public function paginate($search = null, $perPage = 10)
     {
-        return $this->model->when($search, function ($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('cost_price', 'like', "%{$search}%")
-                ->orWhere('selling_price', 'like', "%{$search}%")
-                ->orWhere('stock', 'like', "%{$search}%");
-        })
-            ->orderBy('name', 'asc')
-            ->paginate($perPage)
-            ->appends(['search' => $search]);
+        $query = DB::table('products as p')
+            ->select(
+                'p.*',
+                DB::raw('COALESCE(po.po_qty, 0) - COALESCE(sales.sales_qty, 0) as stock')
+            )
+            ->leftJoinSub(
+                DB::table('purchase_items as pi')
+                    ->select('pi.product_id', DB::raw('SUM(pi.quantity) as po_qty'))
+                    ->join('purchase_orders as po', 'pi.purchase_order_id', '=', 'po.id')
+                    ->where('po.status', 'completed')
+                    ->groupBy('pi.product_id'),
+                'po',
+                'po.product_id',
+                '=',
+                'p.id'
+            )
+            ->leftJoinSub(
+                DB::table('sale_items as si')
+                    ->select('si.product_id', DB::raw('SUM(si.quantity) as sales_qty'))
+                    ->join('sales as s', 'si.sale_id', '=', 's.id')
+                    ->where('s.sales_status', 'completed')
+                    ->groupBy('si.product_id'),
+                'sales',
+                'sales.product_id',
+                '=',
+                'p.id'
+            );
+
+        // Apply search if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('p.name', 'like', "%{$search}%")
+                ->orWhere('p.selling_price', 'like', "%{$search}%");
+            });
+        }
+
+        // Order and paginate
+        return $query->orderBy('p.name', 'asc')
+                    ->paginate($perPage)
+                    ->appends(['search' => $search]);
     }
 
     public function countByCategory()
@@ -51,10 +82,34 @@ class ProductRepository extends BaseRepository
 
     public function countByStockStatus()
     {
-        return DB::table('products')
-            ->select('name', 'stock')
-            ->where('stock', '<', 10)
-            ->orderBy('stock', 'asc')
+        return DB::table('products as p')
+            ->select(
+                'p.name',
+                'p.selling_price',
+                DB::raw('COALESCE(po.po_qty, 0) - COALESCE(sales.sales_qty, 0) as stock')
+            )
+            ->leftJoinSub(
+                DB::table('purchase_items as pi')
+                    ->select('pi.product_id', DB::raw('SUM(pi.quantity) as po_qty'))
+                    ->join('purchase_orders as po', 'pi.purchase_order_id', '=', 'po.id')
+                    ->where('po.status', 'completed')
+                    ->groupBy('pi.product_id'),
+                'po',
+                'po.product_id',
+                '=',
+                'p.id'
+            )
+            ->leftJoinSub(
+                DB::table('sale_items as si')
+                    ->select('si.product_id', DB::raw('SUM(si.quantity) as sales_qty'))
+                    ->join('sales as s', 'si.sale_id', '=', 's.id')
+                    ->where('s.sales_status', 'completed')
+                    ->groupBy('si.product_id'),
+                'sales',
+                'sales.product_id',
+                '=',
+                'p.id'
+            )
             ->paginate(10);
     }
 
@@ -65,5 +120,10 @@ class ProductRepository extends BaseRepository
             ->orderBy('name', 'asc')
             ->limit(10)
             ->get();
+    }
+
+    public function countAll()
+    {
+        return $this->model->count();
     }
 }

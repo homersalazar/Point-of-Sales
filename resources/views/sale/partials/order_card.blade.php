@@ -68,13 +68,18 @@
         </div>
 
         @if ($row['sales_status'] == 'pending')
-            <!-- Actions -->
-            <div class="flex-row gap-3 w-full">
-                <x-button color="error" class="text-white" onclick="orderPrep('{{ $row['order_no'] }}', 'cancelled')">
+            <div class="flex flex-wrap gap-3 w-full">
+                <x-button
+                    color="error"
+                    class="text-white w-full sm:w-auto"
+                    onclick="orderPrep('{{ $row['order_no'] }}', 'cancelled')">
                     Cancel Order
                 </x-button>
 
-                <x-button color="success" class="text-white" onclick="orderPrep('{{ $row['order_no'] }}', 'completed')">
+                <x-button
+                    color="success"
+                    class="text-white w-full sm:w-auto"
+                    onclick="orderPrep('{{ $row['order_no'] }}', 'completed')">
                     Complete Order
                 </x-button>
             </div>

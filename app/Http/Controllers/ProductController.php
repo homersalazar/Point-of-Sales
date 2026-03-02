@@ -24,18 +24,13 @@ class ProductController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
 
-        // Handle "All"
+        // Handle "All" (-1)
         if ($perPage == -1) {
-            $perPage = Product::count();
+            $perPage = $this->productService->countAllProducts();
         }
 
-        // Only filter if search is not empty
-        if (!empty($search)) {
-            $products = $this->productService->search($search, $perPage);
-        } else {
-            // No search, return all products
-            $products = Product::orderBy('name', 'asc')->paginate($perPage);
-        }
+        // Use service to paginate with stock
+        $products = $this->productService->paginateWithStock($search, $perPage);
 
         if ($request->ajax()) {
             return view('product.partials.product_table', compact('products'))->render();
@@ -56,9 +51,7 @@ class ProductController extends Controller
                 'max:255',
                 Rule::unique('products', 'name'), // ✅ prevents duplicate names
             ],
-            'cost_price'    => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
-            'stock'         => 'required|integer|min:0',
             'image'         => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -94,9 +87,7 @@ class ProductController extends Controller
                 'max:255',
                 Rule::unique('products', 'name')->ignore($id), // ✅ ignore current product
             ],
-            'cost_price'    => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
-            'stock'         => 'required|integer|min:0',
             'image'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // optional for update
         ]);
 
