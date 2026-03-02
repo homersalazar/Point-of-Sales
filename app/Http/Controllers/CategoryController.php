@@ -43,7 +43,7 @@ class CategoryController extends Controller
     public function create_category(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name',
         ]);
 
         try {
@@ -59,7 +59,7 @@ class CategoryController extends Controller
     public function update_category(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name,'.$id,
             'description' => 'nullable|string',
         ]);
 

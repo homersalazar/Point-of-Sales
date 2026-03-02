@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Unit;
 use App\Services\UnitService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UnitController extends Controller
 {
@@ -40,12 +41,11 @@ class UnitController extends Controller
         return view('unit.index', compact('units', 'search', 'perPage'));
     }
 
-
     public function create_unit(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'abbreviation' => 'nullable|string|max:10',
+            'name' => 'required|string|max:255|unique:units,name',
+            'abbreviation' => 'nullable|string|max:10|unique:units,abbreviation',
         ]);
 
         try {
@@ -61,10 +61,19 @@ class UnitController extends Controller
     public function update_unit(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'abbreviation' => 'nullable|string|max:10',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('units', 'name')->ignore($id), // ✅ ignore current unit
+            ],
+            'abbreviation' => [
+                'nullable',
+                'string',
+                'max:10',
+                Rule::unique('units', 'abbreviation')->ignore($id), // ✅ prevent duplicate abbreviation
+            ],
         ]);
-
         try {
             $category = $this->unitService->show($id);
 

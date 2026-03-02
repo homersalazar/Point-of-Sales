@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -49,7 +50,12 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'category_id'   => 'required|exists:categories,id',
-            'name'  => 'required|string|max:255',
+            'name'          => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('products', 'name'), // ✅ prevents duplicate names
+            ],
             'cost_price'    => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
             'stock'         => 'required|integer|min:0',
@@ -82,11 +88,16 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'category_id'   => 'required|exists:categories,id',
-            'name'          => 'required|string|max:255',
+            'name'          => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('products', 'name')->ignore($id), // ✅ ignore current product
+            ],
             'cost_price'    => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
             'stock'         => 'required|integer|min:0',
-            'image'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // nullable for update
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // optional for update
         ]);
 
         try {

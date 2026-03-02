@@ -59,7 +59,6 @@ class CustomerController extends Controller
         }
     }
 
-
     public function update_customer(Request $request, $id)
     {
         $validated = $request->validate([
@@ -102,7 +101,6 @@ class CustomerController extends Controller
             ], 500);
         }
     }
-
 
     public function delete_customer($id)
     {
