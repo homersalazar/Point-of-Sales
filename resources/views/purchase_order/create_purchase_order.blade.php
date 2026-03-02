@@ -38,7 +38,7 @@
                 <div class="relative overflow-x-auto">
                     <form method="POST" id="addPurchaseOrderForm">
                         @csrf
-                        <x-table id="PurchaseOrderTable" :headers="['Product Name', 'Quantity', 'Cost Price', 'Subtotal', '']"></x-table>
+                        <x-table id="PurchaseOrderTable" :headers="['Product Name', 'Quantity', 'Unit', 'Unit Price', 'Subtotal', '']"></x-table>
 
                         <div class="flex flex-col max-w-lg py-2">
                             <div class="flex flex-row items-center w-full">
@@ -168,15 +168,15 @@
             });
         });
 
-        // Listen for input changes on quantity or cost_price fields
+        // Listen for input changes on quantity or unit_price fields
         document.addEventListener('input', function(e) {
-            if (e.target.classList.contains('quantity') || e.target.classList.contains('cost_price')) {
+            if (e.target.classList.contains('quantity') || e.target.classList.contains('unit_price')) {
                 // Find the closest table row
                 let row = e.target.closest('tr');
 
                 // Get quantity and cost price values
                 let quantity = parseFloat(row.querySelector('.quantity').value) || 0;
-                let costPrice = parseFloat(row.querySelector('.cost_price').value) || 0;
+                let costPrice = parseFloat(row.querySelector('.unit_price').value) || 0;
 
                 // Calculate subtotal
                 let subtotal = quantity * costPrice;
@@ -208,13 +208,21 @@
             items++;
             $("#product").val('');
             $('#productLists').fadeOut();
+            var unitOptions = @json($units);
 
             var counterId = counter++;
 
             var html = '<tr class="bg-white border-b border-gray-200 hover:bg-gray-100" data-row="' + counterId + '" data-product-id="' + prod_id + '">';
                 html += '<td>' + prod_name + '</td>';
                 html += '<td><input type="number" name="quantity[]" class="quantity input input-bordered input-sm input-primary w-full"></td>';
-                html += '<td><input type="number" name="cost_price[]" min="0" step="any" class="cost_price input input-bordered input-sm input-primary w-full"></td>';
+                html += '<td>';
+                    html += '<select name="unit_id[]" class="select select-primary select-sm w-full">';
+                    unitOptions.forEach(function(option) {
+                        html += '<option value="' + option.id + '">' + ucwords(option.name) + '</option>';
+                    });
+                    html += '</select>';
+                html += '</td>';
+                html += '<td><input type="number" name="unit_price[]" min="0" step="any" class="unit_price input input-bordered input-sm input-primary w-full"></td>';
                 html += '<td><input type="text" name="subtotal[]" class="subtotal bg-gray-200 input input-bordered input-sm input-primary w-full" readonly></td>';
                 html += '<td>';
                     html += '<td><input type="hidden" name="product_id[]" value="' + prod_id + '">';

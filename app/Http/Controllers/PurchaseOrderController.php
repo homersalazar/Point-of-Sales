@@ -6,6 +6,7 @@ use App\Models\Purchase_order;
 use App\Services\ProductService;
 use App\Services\PurchaseOrderService;
 use App\Services\SupplierService;
+use App\Services\UnitService;
 use Illuminate\Http\Request;
 
 class PurchaseOrderController extends Controller
@@ -13,15 +14,18 @@ class PurchaseOrderController extends Controller
     protected $purchaseOrderService;
     protected $supplierService;
     protected $productService;
+    protected $unitService;
 
     public function __construct(
         PurchaseOrderService $purchaseOrderService,
         SupplierService $supplierService,
-        ProductService $productService
+        ProductService $productService,
+        UnitService $unitService
     ) {
         $this->purchaseOrderService = $purchaseOrderService;
         $this->supplierService = $supplierService;
         $this->productService = $productService;
+        $this->unitService = $unitService;
     }
 
     public function index(Request $request)
@@ -46,7 +50,8 @@ class PurchaseOrderController extends Controller
     {
         $suppliers = $this->supplierService->getAll();
         $products = $this->productService->getAll();
-        return view('purchase_order.create_purchase_order', compact('suppliers', 'products'));
+        $units = $this->unitService->getAll();
+        return view('purchase_order.create_purchase_order', compact('suppliers', 'products', 'units'));
     }
 
     public function fetch_product(Request $request)
@@ -91,9 +96,10 @@ class PurchaseOrderController extends Controller
     {
         $validated = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
-            'product_id'  => 'required|array',
-            'quantity'    => 'required|array',
-            'cost_price'  => 'required|array',
+            'product_id.*' => 'exists:products,id',
+            'unit_id.*' => 'exists:units,id',
+            'quantity.*' => 'numeric|min:0.01',
+            'unit_price.*' => 'numeric|min:0'
         ]);
 
         try {
@@ -138,7 +144,8 @@ class PurchaseOrderController extends Controller
             $html .= '<th class="p-2 text-left">' . $count . '</th>';
             $html .= '<td class="p-2 text-left">' . ucwords($row->product_name) . '</td>';
             $html .= '<td class="p-2 text-right">' . number_format($row->quantity, 2) . '</td>';
-            $html .= '<td class="p-2 text-right">' . number_format($row->cost_price, 2) . '</td>';
+            $html .= '<td class="p-2 text-right">' . strtolower($row->abbreviation) . '</td>';
+            $html .= '<td class="p-2 text-right">' . number_format($row->unit_price, 2) . '</td>';
             $html .= '<td class="p-2 text-right">' . number_format($row->subtotal, 2) . '</td>';
             $html .= '</tr>';
 

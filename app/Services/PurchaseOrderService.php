@@ -41,15 +41,17 @@ class PurchaseOrderService extends BaseService
             // Insert purchase items
             foreach ($data['product_id'] as $index => $productId) {
                 $quantity = $data['quantity'][$index];
-                $costPrice = $data['cost_price'][$index];
-                $subtotal = $quantity * $costPrice;
+                $unitId = $data['unit_id'][$index];
+                $unitPrice = $data['unit_price'][$index];
+                $subtotal = $quantity * $unitPrice;
                 $totalAmount += $subtotal;
 
                 DB::table('purchase_items')->insert([
                     'purchase_order_id' => $purchaseOrderId,
                     'product_id'        => $productId,
                     'quantity'          => $quantity,
-                    'cost_price'        => $costPrice,
+                    'unit_id'          => $unitId,
+                    'unit_price'        => $unitPrice,
                     'subtotal'          => $subtotal,
                     'created_at'        => now(),
                     'updated_at'        => now(),
@@ -80,8 +82,9 @@ class PurchaseOrderService extends BaseService
     {
         return DB::table('purchase_items')
             ->join('products', 'purchase_items.product_id', '=', 'products.id')
+            ->join('units', 'purchase_items.unit_id', '=', 'units.id')
             ->where('purchase_items.purchase_order_id', $poId)
-            ->select('products.name as product_name', 'purchase_items.quantity', 'purchase_items.cost_price', 'purchase_items.subtotal')
+            ->select('products.name as product_name', 'purchase_items.quantity', 'units.abbreviation', 'purchase_items.unit_price', 'purchase_items.subtotal')
             ->get();
     }
 
