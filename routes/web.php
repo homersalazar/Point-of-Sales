@@ -6,9 +6,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,21 @@ Route::get('/', function () {
 
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('user.index');
+    Route::get('/get_users', [UserController::class, 'getUsers'])->name('users.data');
+    Route::post('/create_user', [UserController::class, 'create_user'])->name('user.create_user');
+    Route::put('/update_user/{id}', [UserController::class, 'update_user'])->name('user.update_user');
+    Route::put('/update_password/{id}', [UserController::class, 'update_password'])->name('user.update_password');
+
+    Route::get('/assign_access/{id}', [UserController::class, 'assign_access'])->name('user.assign_access');
+    Route::post('/change_role', [UserController::class, 'change_role'])->name('user.change_role');
+    Route::post('/assign_permission/{id}', [UserController::class, 'assign_permission'])->name('user.assign_permission');
+
+    Route::post('/login', [UserController::class, 'login'])->name('user.login');
+    Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
 });
 
 Route::prefix('product')->group(function () {
@@ -93,4 +110,19 @@ Route::prefix('expense')->group(function () {
     Route::post('/create_exp_category', [ExpenseController::class, 'create_exp_category'])->name('expense.create_exp_category');
     Route::put('/update_exp_category/{id}', [ExpenseController::class, 'update_exp_category'])->name('expense.update_exp_category');
     Route::delete('/delete_expense_category/{id}', [ExpenseController::class, 'delete_expense_category'])->name('expense.delete_expense_category');
+});
+
+Route::prefix('access')->group(function () {
+    Route::get('/', [RolePermissionController::class, 'index'])->name('access.index');
+    Route::get('/get_roles', [RolePermissionController::class, 'getRole'])->name('roles.data');
+    Route::post('/create_role', [RolePermissionController::class, 'create_role'])->name('roles.create_role');
+    Route::put('/update_role/{id}', [RolePermissionController::class, 'update_role'])->name('roles.update_role');
+
+    Route::get('/permissionByRole/{id}', [RolePermissionController::class, 'permissionByRole'])->name('roles.permissionByRole');
+
+    Route::post('/create_permission', [RolePermissionController::class, 'create_permission'])->name('permissions.create_permission');
+    Route::put('/update_permission/{id}', [RolePermissionController::class, 'update_permission'])->name('permissions.update_permission');
+    Route::post('/assign_permission/{id}', [RolePermissionController::class, 'assign_permission'])->name('permissions.assign_permission');
+    Route::post('/revoke_permission/{id}', [RolePermissionController::class, 'revoke_permission'])->name('permissions.revoke_permission');
+
 });

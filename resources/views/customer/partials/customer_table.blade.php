@@ -73,7 +73,7 @@
                     });
                 },
                 error: function(xhr){
-                    let message = 'An error occurred while updating the category.';
+                    let message = 'An error occurred while updating the customer.';
                     if(xhr.responseJSON && xhr.responseJSON.message){
                         message = xhr.responseJSON.message;
                     }

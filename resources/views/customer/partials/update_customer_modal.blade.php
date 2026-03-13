@@ -30,7 +30,7 @@
         {{-- Email --}}
         <div>
             <label class="label">
-                <span class="label-text">Description</span>
+                <span class="label-text">Email</span>
             </label>
             <x-text-input
                 name="email"

@@ -3,7 +3,7 @@
     'headers' => []
 ])
 
-<div class="overflow-x-auto bg-white rounded-lg shadow">
+<div class="overflow-x-auto w-full">
     <table {{ $attributes->class(['table', 'table-sm', 'table-bordered', 'table-zebra', 'w-full']) }} id="{{ $id }}">
         <thead class="bg-base-300">
             <tr>
