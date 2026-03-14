@@ -49,6 +49,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/get_product', [ProductController::class, 'getProducts'])->name('product.data');
     Route::post('/create_product', [ProductController::class, 'create_product'])->name('product.create_product');
     Route::put('/update_product/{id}', [ProductController::class, 'update_product'])->name('product.update_product');
     Route::delete('/delete_product/{id}', [ProductController::class, 'delete_product'])->name('product.delete_product');

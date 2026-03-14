@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use Illuminate\Http\Request;
 
 use App\Repositories\ProductRepository;
 
@@ -40,9 +41,9 @@ class ProductService extends BaseService
         return $this->productRepo->model->count();
     }
 
-    public function paginateWithStock($search = null, $perPage = 10)
+    public function dataTable(Request $request)
     {
-        return $this->productRepo->paginate($search, $perPage);
+        return $this->repo->getProductData($request);
     }
 
 }

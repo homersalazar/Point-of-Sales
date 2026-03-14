@@ -1,79 +1,10 @@
 
-<div id="productTable">
+<div>
     <x-table
-        :headers="['', 'Name', 'SKU', 'Selling Price', 'Stock', 'Action']"
+        id="productTable"
+        :headers="['Name', 'SKU', 'Selling Price', 'Stock', 'Action']"
     >
-        @forelse ($products as $row)
-            <tr>
-                <th>
-                    <x-checkbox />
-                </th>
-                <td>
-                    <div class="flex items-center gap-3">
-                        <div class="avatar">
-                            <div class="mask mask-squircle h-12 w-12">
-                                <img
-                                    src="{{ asset('storage/product/' . $row->image) }}"
-                                    alt="{{ $row->name }}"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="font-bold">{{ $row->name }}</div>
-                        </div>
-                    </div>
-                </td>
-                <td>{{ $row->sku }}</td>
-                <td>₱{{ $row->selling_price }}</td>
-                <td>
-                    @php
-                        $color = 'bg-gray-100 text-gray-700';
-
-                        if ($row->stock == 0) {
-                            $color = 'bg-red-100 text-red-700';
-                        } elseif ($row->stock <= 5) {
-                            $color = 'bg-yellow-100 text-yellow-700';
-                        } elseif ($row->stock >= 10) {
-                            $color = 'bg-green-100 text-green-700';
-                        }
-                    @endphp
-
-                    <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $color }}">
-                        {{ $row->stock }}
-                    </span>
-                </td>
-                <td>
-                    <div class="flex flex-row gap-2 w-full">
-                        <x-button
-                            color="info"
-                            outline
-                            onclick="update_product('{{ $row->id }}', '{{ $row->category_id }}', '{{ $row->name }}', '{{ $row->selling_price }}', '{{ $row->image }}')"
-                        >
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </x-button>
-
-                        <x-button
-                            color="error"
-                            outline
-                            onclick="delete_product('{{ $row->id }}')"
-                        >
-                            <i class="fa-solid fa-trash-can"></i>
-                        </x-button>
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="7" class="text-center text-gray-500">No products found.</td>
-            </tr>
-        @endforelse
     </x-table>
-
-    @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $products->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -189,4 +120,19 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        $('#productTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('product.data') }}",
+            columns: [
+                {data: 'name'},
+                {data: 'sku'},
+                {data: 'selling_price'},
+                {data: 'stock'},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+    });
 </script>

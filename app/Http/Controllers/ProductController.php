@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -19,26 +18,16 @@ class ProductController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-
-        // Handle "All" (-1)
-        if ($perPage == -1) {
-            $perPage = $this->productService->countAllProducts();
-        }
-
-        // Use service to paginate with stock
-        $products = $this->productService->paginateWithStock($search, $perPage);
-
-        if ($request->ajax()) {
-            return view('product.partials.product_table', compact('products'))->render();
-        }
-
         $categories = $this->categoryService->getAll();
+        return view('product.index', compact('categories'));
+    }
 
-        return view('product.index', compact('products', 'search', 'perPage', 'categories'));
+    public function getProducts(Request $request)
+    {
+        $products = $this->productService->dataTable($request);
+        return response()->json($products);
     }
 
     public function create_product(Request $request)
