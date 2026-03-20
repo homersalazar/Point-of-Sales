@@ -98,10 +98,10 @@
                                 <i class="fa-solid fa-clipboard-list nav-icon" style="font-size:13px"></i>
                                 <span class="nav-label">Sales Orders</span>
                             </a>
-                            <div class="nav-item" data-tip="Invoice">
+                            {{-- <div class="nav-item" data-tip="Invoice">
                                 <i class="fa-solid fa-file-invoice nav-icon" style="font-size:13px"></i>
                                 <span class="nav-label">Invoice</span>
-                            </div>
+                            </div> --}}
                             <a href="/customer/" class="nav-item" data-tip="Customers">
                                 <i class="fa-solid fa-users nav-icon" style="font-size:13px"></i>
                                 <span class="nav-label">Customers</span>

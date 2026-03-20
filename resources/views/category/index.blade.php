@@ -22,15 +22,6 @@
             <!-- Right Side -->
             <div class="flex items-center gap-3 w-full md:w-auto">
 
-                <!-- Search -->
-                <div class="w-full md:w-72">
-                    <x-search-input
-                        url="{{ route('category.index') }}"
-                        placeholder="Search categories"
-                        target="categoryTable"
-                    />
-                </div>
-
                 <!-- Add Button -->
                 <x-button
                     color="primary"
@@ -47,26 +38,7 @@
 
         <!-- Content Card -->
         <div class="bg-base-100 border border-base-200 rounded-2xl shadow-sm p-6">
-            @if ($categories->isEmpty())
-                <div class="flex flex-col items-center justify-center py-16 text-center">
-                    <div class="w-14 h-14 rounded-full bg-base-200 flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-box text-base-content/40 text-xl"></i>
-                    </div>
-                    <h2 class="font-semibold text-base-content text-lg">
-                        No Category Found
-                    </h2>
-                    <p class="text-sm text-base-content/50 mt-1 mb-4">
-                        Start by adding your first category.
-                    </p>
-
-                    <x-button color="primary" click="add_category">
-                        Add Category
-                    </x-button>
-                </div>
-            @else
-                <x-entries />
-                @include('category.partials.category_table', ['categories' => $categories])
-            @endif
+            @include('category.partials.category_table')
         </div>
     </div>
 

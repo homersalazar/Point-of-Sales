@@ -1,8 +1,8 @@
 
 
-<div id="supplierTable">
-    <x-table  :headers="['Name', 'Email', 'Phone no.', 'Address', 'Action']">
-        @forelse ($suppliers as $row)
+<div>
+    <x-table id="supplierTable" :headers="['Name', 'Email', 'Phone no.', 'Address', 'Action']">
+        @foreach ($suppliers as $row)
             <tr>
                 <th>{{ $row->name }}</th>
                 <td>{{ $row->email }}</td>
@@ -28,18 +28,8 @@
                     </div>
                 </td>
             </tr>
-        @empty
-            <tr>
-                <td colspan="3" class="text-center text-gray-500">No suppliers found.</td>
-            </tr>
-        @endforelse
+        @endforeach
     </x-table>
-
-    @if ($suppliers instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $suppliers->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -145,4 +135,8 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        $('#supplierTable').DataTable();
+    });
 </script>

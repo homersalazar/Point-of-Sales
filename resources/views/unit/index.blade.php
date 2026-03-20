@@ -22,15 +22,6 @@
             <!-- Right Side -->
             <div class="flex items-center gap-3 w-full md:w-auto">
 
-                <!-- Search -->
-                <div class="w-full md:w-72">
-                    <x-search-input
-                        url="{{ route('unit.index') }}"
-                        placeholder="Search units"
-                        target="unitTable"
-                    />
-                </div>
-
                 <!-- Add Button -->
                 <x-button
                     color="primary"
@@ -64,8 +55,7 @@
                     </x-button>
                 </div>
             @else
-                <x-entries />
-                @include('unit.partials.unit_table', ['units' => $units])
+                @include('unit.partials.unit_table')
             @endif
         </div>
     </div>

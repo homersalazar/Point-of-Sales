@@ -54,21 +54,6 @@
                     </button>
                 @endforeach
             </div>
-
-            <!-- RIGHT SIDE (Search) -->
-            <div class="tableView hidden md:ml-auto">
-                <label class="input input-bordered input-sm flex items-center gap-2 w-64">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search..."
-                        class="grow"
-                        oninput="filterSalesOrder()"
-                    />
-                    <i class="fa-solid fa-magnifying-glass w-4 h-4"></i>
-                </label>
-            </div>
-
         </div>
 
         {{-- Content --}}
@@ -77,7 +62,6 @@
         </div>
 
         <div class="tableView hidden bg-base-100 border border-base-200 rounded-2xl shadow-sm p-6">
-            <x-entries />
             @include('sale.partials.order_table')
         </div>
     </div>
@@ -96,15 +80,6 @@
 
             });
         });
-
-        const filterSalesOrder = () => {
-            const q = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            document.querySelectorAll('.order-card').forEach(card => {
-                const text = card.dataset.search || '';
-                card.style.display = text.includes(q) ? '' : 'none';
-            });
-        }
 
         const setStatus = (el, stats) => {
             document.querySelectorAll('.stats-tab').forEach(t => {

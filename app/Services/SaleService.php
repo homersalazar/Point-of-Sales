@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Sale_item;
 use App\Repositories\SaleRepository;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class SaleService extends BaseService
 {

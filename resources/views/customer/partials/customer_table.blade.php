@@ -1,8 +1,8 @@
 
 
-<div id="customerTable">
-    <x-table  :headers="['Name', 'Email', 'Phone no.', 'Address', 'Action']">
-        @forelse ($customers as $row)
+<div>
+    <x-table  id="customerTable" :headers="['Name', 'Email', 'Phone no.', 'Address', 'Action']">
+        @foreach ($customers as $row)
             <tr>
                 <th>{{ $row->name }}</th>
                 <td>{{ $row->email }}</td>
@@ -28,18 +28,9 @@
                     </div>
                 </td>
             </tr>
-        @empty
-            <tr>
-                <td colspan="3" class="text-center text-gray-500">No customers found.</td>
-            </tr>
-        @endforelse
+        @endforeach
     </x-table>
 
-    @if ($customers instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $customers->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -145,4 +136,8 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        $('#customerTable').DataTable();
+    });
 </script>

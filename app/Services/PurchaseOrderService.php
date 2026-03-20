@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\PurchaseOrderRepository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class PurchaseOrderService extends BaseService
 {
@@ -18,6 +19,11 @@ class PurchaseOrderService extends BaseService
     public function paginate($search = null, $perPage = 10)
     {
         return $this->purchaseOrderRepo->paginate($search, $perPage);
+    }
+
+    public function dataTable(Request $request)
+    {
+        return $this->repo->getPurchaseOrderData($request);
     }
 
     public function createPurchaseOrder(array $data)

@@ -1,8 +1,8 @@
 
 
-<div id="unitTable">
-    <x-table  :headers="['Name', 'Abbreviation', 'Action']">
-        @forelse ($units as $row)
+<div>
+    <x-table id="unitTable" :headers="['Name', 'Abbreviation', 'Action']">
+        @foreach ($units as $row)
             <tr>
                 <th>{{ $row->name }}</th>
                 <td>{{ $row->abbreviation }}</td>
@@ -26,18 +26,8 @@
                     </div>
                 </td>
             </tr>
-        @empty
-            <tr>
-                <td colspan="3" class="text-center text-gray-500">No units found.</td>
-            </tr>
-        @endforelse
+        @endforeach
     </x-table>
-
-    @if ($units instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $units->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -141,4 +131,8 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        $('#unitTable').DataTable();
+    });
 </script>

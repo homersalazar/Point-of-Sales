@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Expense;
 use App\Models\Expense_category;
 use App\Services\ExpenseCategoryService;
 use App\Services\ExpenseService;
@@ -23,22 +22,14 @@ class ExpenseController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-
-        if ($perPage == -1) {
-            $perPage = Expense::count();
-        }
-
-        $expenses = $this->expenseService->paginate($search, $perPage);
-
-        if ($request->ajax()) {
-            return view('expense.partials.expense_table', compact('expenses'))->render();
-        }
-
         $expense_categories = $this->expenseCategoryService->getAll();
+        return view('expense.index', compact('expense_categories'));
+    }
 
-        return view('expense.index', compact('expenses', 'search', 'perPage', 'expense_categories'));
+    public function getExpenses(Request $request)
+    {
+        $expenses = $this->expenseService->dataTable($request);
+        return response()->json($expenses);
     }
 
     public function store(Request $request)

@@ -1,66 +1,10 @@
 
 
-<div id="expenseTable">
-    <x-table  :headers="['Name', 'Amount', 'Expense Date', 'Description', 'Status', 'Action']">
-        @forelse ($expenses as $row)
-            <tr>
-                <th>{{ $row->category_name }}</th>
-                <td>₱{{ number_format($row->amount, 2) }}</td>
-                <td>{{ date('F j, Y', strtotime($row->expense_date)) }}</td>
-                <td>{{ $row->description }}</td>
-                <td>
-                    <x-status :status="$row->status" />
-                </td>
-                <td>
-                    <div class="flex flex-row gap-2 w-full">
-                        @if ($row->status == 'pending')
-                            <x-button
-                                color="success"
-                                outline
-                                onclick="updateStatus('{{ $row->id }}', 'completed')"
-                            >
-                                <i class="fa-solid fa-check"></i>
-                            </x-button>
-
-                            <x-button
-                                color="error"
-                                outline
-                                onclick="updateStatus('{{ $row->id }}', 'cancelled')"
-                            >
-                                <i class="fa-solid fa-xmark"></i>
-                            </x-button>
-
-                            <x-button
-                                color="info"
-                                outline
-                                onclick="update_expense('{{ $row->id }}', '{{ $row->category_id }}', '{{ $row->amount }}', '{{ $row->description }}', '{{ $row->expense_date }}')"
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </x-button>
-
-                            <x-button
-                                color="error"
-                                outline
-                                onclick="delete_expense('{{ $row->id }}')"
-                            >
-                                <i class="fa-solid fa-trash-can"></i>
-                            </x-button>
-                        @endif
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="3" class="text-center text-gray-500">No expense found.</td>
-            </tr>
-        @endforelse
+<div>
+    <x-table
+        id="expenseTable"
+        :headers="['Name', 'Amount', 'Expense Date', 'Description', 'Status', 'Action']">
     </x-table>
-
-    @if ($expenses instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $expenses->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -244,4 +188,20 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        $('#expenseTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('expense.data') }}",
+            columns: [
+                {data: 'name'},
+                {data: 'amount'},
+                {data: 'expense_date'},
+                {data: 'description'},
+                {data: 'status'},
+                {data: 'action'}
+            ]
+        });
+    });
 </script>

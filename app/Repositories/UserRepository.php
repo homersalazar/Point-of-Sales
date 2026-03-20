@@ -46,13 +46,13 @@ class UserRepository extends BaseRepository
         $data = [];
         foreach ($users as $row) {
             $action = '<div class="flex gap-2">
-                <button type="button" onclick="update_user(\'' . $row->id . '\', \'' . $row->name . '\', \'' . $row->email . '\')" class="btn btn-info btn-outline btn-sm">
-                    <i class="fa fa-edit"></i>
-                </button>
-                <a href="/user/assign_access/' . $row->id . '" class="btn btn-warning btn-outline btn-sm">
-                    <i class="fa fa-user-shield"></i>
-                </a>
-            </div>';
+                            <button type="button" onclick="update_user(\'' . $row->id . '\', \'' . $row->name . '\', \'' . $row->email . '\')" class="btn btn-info btn-outline btn-sm">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <a href="/user/assign_access/' . $row->id . '" class="btn btn-warning btn-outline btn-sm">
+                                <i class="fa fa-user-shield"></i>
+                            </a>
+                        </div>';
 
             $data[] = [
                 'id' => $row->id,

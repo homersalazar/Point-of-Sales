@@ -1,8 +1,11 @@
 
 
-<div id="categoryTable">
-    <x-table  :headers="['Name', 'Description', 'Action']">
-        @forelse ($categories as $row)
+<div>
+    <x-table
+        id="categoryTable"
+        :headers="['Name', 'Description', 'Action']"
+    >
+        @foreach ($categories as $row)
             <tr>
                 <th>{{ $row->name }}</th>
                 <td>{{ $row->description }}</td>
@@ -26,18 +29,8 @@
                     </div>
                 </td>
             </tr>
-        @empty
-            <tr>
-                <td colspan="3" class="text-center text-gray-500">No categories found.</td>
-            </tr>
-        @endforelse
+        @endforeach
     </x-table>
-
-    @if ($categories instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $categories->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -141,4 +134,8 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        $('#categoryTable').DataTable();
+    });
 </script>

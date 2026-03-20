@@ -1,75 +1,10 @@
 
 
-<div id="purchase_order_table">
-    <x-table  :headers="['PO Number', 'Supplier Name', 'Total Amount', 'Status', 'Action']">
-        @forelse ($purchaseOrders as $row)
-            <tr>
-                <th>{{ $row->po_number }}</th>
-                <td>{{ $row->supplier_name }}</td>
-                <td>₱{{ number_format($row->total_amount, 2) }}</td>
-                <td>
-                    <x-status :status="$row->status" />
-
-                </td>
-                <td>
-                    <div class="flex flex-row gap-2 w-full">
-                        @if ($row->status == 'pending')
-                            <x-button
-                                color="success"
-                                outline
-                                onclick="updateStatus('{{ $row->id }}', 'completed')"
-                            >
-                                <i class="fa-solid fa-check"></i>
-                            </x-button>
-
-                            <x-button
-                                color="error"
-                                outline
-                                onclick="updateStatus('{{ $row->id }}', 'cancelled')"
-                            >
-                                <i class="fa-solid fa-xmark"></i>
-                            </x-button>
-
-                            <x-button
-                                color="info"
-                                outline
-                                {{-- onclick="update_expense('{{ $row->id }}', '{{ $row->category_id }}', '{{ $row->amount }}', '{{ $row->description }}', '{{ $row->expense_date }}')" --}}
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </x-button>
-
-                            <x-button
-                                color="error"
-                                outline
-                                {{-- onclick="delete_expense('{{ $row->id }}')" --}}
-                            >
-                                <i class="fa-solid fa-trash-can"></i>
-                            </x-button>
-                        @endif
-
-                        <x-button
-                            color="warning"
-                            outline
-                            onclick="viewPurchaseOrder('{{ $row->id }}', '{{ $row->po_number }}', '{{ $row->supplier_name }}', '{{ $row->total_amount }}', '{{ ucwords($row->status) }}')"
-                        >
-                            <i class="fa-regular fa-eye"></i>
-                        </x-button>
-
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="5" class="text-center text-gray-500">No purchase orders found.</td>
-            </tr>
-        @endforelse
+<div>
+    <x-table
+        id="purchase_order_table"
+        :headers="['PO Number', 'Supplier Name', 'Total Amount', 'Status', 'Action']">
     </x-table>
-
-    @if ($purchaseOrders instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $purchaseOrders->links() }}
-        </div>
-    @endif
 </div>
 
 <script>
@@ -190,5 +125,18 @@
             });
     };
 
-
+    $(document).ready(function(){
+        $('#purchase_order_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('purchase_order.data') }}",
+            columns: [
+                {data: 'po_no'},
+                {data: 'name'},
+                {data: 'total_amount'},
+                {data: 'status'},
+                {data: 'action'}
+            ]
+        });
+    });
 </script>

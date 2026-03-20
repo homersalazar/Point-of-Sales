@@ -22,15 +22,6 @@
             <!-- Right Side -->
             <div class="flex items-center gap-3 w-full md:w-auto">
 
-                <!-- Search -->
-                <div class="w-full md:w-72">
-                    <x-search-input
-                        url="{{ route('supplier.index') }}"
-                        placeholder="Search suppliers"
-                        target="supplierTable"
-                    />
-                </div>
-
                 <!-- Add Button -->
                 <x-button
                     color="primary"
@@ -64,8 +55,7 @@
                     </x-button>
                 </div>
             @else
-                <x-entries />
-                @include('supplier.partials.supplier_table', ['suppliers' => $suppliers])
+                @include('supplier.partials.supplier_table')
             @endif
         </div>
     </div>

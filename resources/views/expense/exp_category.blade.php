@@ -22,15 +22,6 @@
             <!-- Right Side -->
             <div class="flex items-center gap-3 w-full md:w-auto">
 
-                <!-- Search -->
-                <div class="w-full md:w-72">
-                    <x-search-input
-                        url="{{ route('expense.exp_category') }}"
-                        placeholder="Search categories"
-                        target="expenseCategoryTable"
-                    />
-                </div>
-
                 <!-- Add Button -->
                 <x-button
                     color="primary"
@@ -64,8 +55,7 @@
                     </x-button>
                 </div>
             @else
-                <x-entries />
-                @include('expense.partials.expense_category_table', ['exp_categories' => $exp_categories])
+                @include('expense.partials.expense_category_table')
             @endif
         </div>
     </div>

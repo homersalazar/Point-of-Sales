@@ -86,6 +86,7 @@ Route::prefix('customer')->group(function () {
 
 Route::prefix('purchase_order')->group(function () {
     Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order.index');
+    Route::get('/get_purchase_order', [PurchaseOrderController::class, 'getPurchaseOrders'])->name('purchase_order.data');
     Route::get('/create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
     Route::post('/fetch_product', [PurchaseOrderController::class, 'fetch_product'])->name('purchase_order.fetch_product');
     Route::post('/store_purchase_order', [PurchaseOrderController::class, 'store_purchase_order'])->name('purchase_order.store_purchase_order');
@@ -102,6 +103,7 @@ Route::prefix('supplier')->group(function () {
 
 Route::prefix('expense')->group(function () {
     Route::get('/', [ExpenseController::class, 'index'])->name('expense.index');
+    Route::get('/get_expense', [ExpenseController::class, 'getExpenses'])->name('expense.data');
     Route::post('/create_expense', [ExpenseController::class, 'store'])->name('expense.create_expense');
     Route::put('/update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
     Route::put('/update_status/{id}', [ExpenseController::class, 'update_status'])->name('expense.update_status');

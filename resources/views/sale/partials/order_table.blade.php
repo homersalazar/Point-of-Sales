@@ -1,10 +1,9 @@
-
-
-<div id="">
+<div>
     <x-table
-        :headers="['#', 'Date & Time', 'Customer Name', 'Payment Status', 'Total Payment', 'Order Status', 'Orders']"
+        id="salesOrderTable"
+        :headers="['#', 'Date & Time', 'Customer Name', 'Payment Status', 'Total Payment', 'Order Status', 'Action']"
     >
-        @forelse ($sales as $row)
+        @foreach ($sales as $row)
             <tr class="order-card" data-search="{{ strtolower($row['customer_name'] . '  ' . $row['sales_status'] . ' ' . $row['payment_status'] . ' ' . $row['total_amount']) . ' ' . $row['order_no']}}">
                 <th>00{{ $row['order_no'] }}</th>
                 <td>{{ \Carbon\Carbon::parse($row['created_at'])->format('d/m/Y - h:ia') }}</td>
@@ -14,19 +13,33 @@
                 <td>
                     <x-status :status="$row['sales_status']" />
                 </td>
-                <td>Details</td>
+                <td>
+                    @if ($row['sales_status'] == 'pending')
+                        <div class="flex flex-wrap gap-3 w-full">
+                            <x-button
+                                color="error"
+                                outline
+                                onclick="orderPrep('{{ $row['order_no'] }}', 'cancelled')"
+                            >
+                                <i class="fa-solid fa-ban"></i>
+                            </x-button>
+
+                            <x-button
+                                color="success"
+                                outline
+                                onclick="orderPrep('{{ $row['order_no'] }}', 'completed')"
+                            >
+                                <i class="fa-solid fa-check-double"></i>
+                            </x-button>
+                        </div>
+                    @endif
+                </td>
             </tr>
-        @empty
-            <tr>
-                <td colspan="7" class="text-center text-gray-500">No orders found.</td>
-            </tr>
-        @endforelse
+        @endforeach
     </x-table>
-
-    @if ($sales instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-4">
-            {{ $sales->links() }}
-        </div>
-    @endif
 </div>
-
+<script>
+    $(document).ready(function(){
+        $('#salesOrderTable').DataTable();
+    });
+</script>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
@@ -15,29 +14,10 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-
-        // Handle "All"
-        if ($perPage == -1) {
-            $perPage = Category::count();
-        }
-
-        // Only filter if search is not empty
-        if (!empty($search)) {
-            $categories = $this->categoryService->search($search, $perPage);
-        } else {
-            // No search, return all categories
-            $categories = Category::orderBy('name', 'asc')->paginate($perPage);
-        }
-
-        if ($request->ajax()) {
-            return view('category.partials.category_table', compact('categories'))->render();
-        }
-
-        return view('category.index', compact('categories', 'search', 'perPage'));
+        $categories = $this->categoryService->getAll();
+        return view('category.index', compact('categories'));
     }
 
     public function create_category(Request $request)

@@ -28,22 +28,15 @@ class PurchaseOrderController extends Controller
         $this->unitService = $unitService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
+        return view('purchase_order.index');
+    }
 
-        if ($perPage == -1) {
-            $perPage = Purchase_order::count();
-        }
-
-        $purchaseOrders = $this->purchaseOrderService->paginate($search, $perPage);
-
-        if ($request->ajax()) {
-            return view('purchase_order.partials.purchase_order_table', compact('purchaseOrders'))->render();
-        }
-
-        return view('purchase_order.index', compact('purchaseOrders', 'search'));
+    public function getPurchaseOrders(Request $request)
+    {
+        $purchaseOrders = $this->purchaseOrderService->dataTable($request);
+        return response()->json($purchaseOrders);
     }
 
     public function create()

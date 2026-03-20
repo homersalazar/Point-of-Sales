@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\ExpenseRepository;
+use Illuminate\Http\Request;
 
 class ExpenseService extends BaseService
 {
@@ -17,6 +18,11 @@ class ExpenseService extends BaseService
     public function paginate($search = null, $perPage = 10)
     {
         return $this->expenseRepo->paginate($search, $perPage);
+    }
+
+    public function dataTable(Request $request)
+    {
+        return $this->repo->getExpensesData($request);
     }
 
     public function updateStatus($id, $status): array
