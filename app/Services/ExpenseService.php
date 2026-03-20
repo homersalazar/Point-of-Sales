@@ -15,11 +15,6 @@ class ExpenseService extends BaseService
         $this->expenseRepo = $expenseRepo;
     }
 
-    public function paginate($search = null, $perPage = 10)
-    {
-        return $this->expenseRepo->paginate($search, $perPage);
-    }
-
     public function dataTable(Request $request)
     {
         return $this->repo->getExpensesData($request);

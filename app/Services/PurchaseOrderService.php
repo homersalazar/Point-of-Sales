@@ -16,11 +16,6 @@ class PurchaseOrderService extends BaseService
         $this->purchaseOrderRepo = $purchaseOrderRepo;
     }
 
-    public function paginate($search = null, $perPage = 10)
-    {
-        return $this->purchaseOrderRepo->paginate($search, $perPage);
-    }
-
     public function dataTable(Request $request)
     {
         return $this->repo->getPurchaseOrderData($request);
