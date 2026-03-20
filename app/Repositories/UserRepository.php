@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -71,31 +72,27 @@ class UserRepository extends BaseRepository
         ];
     }
 
+
     public function login(array $credentials)
     {
         $user = User::where('email', $credentials['email'])->first();
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
+            // Log in the user
+            Auth::login($user); // <-- this is key
 
-            // Simulate token generation
-            $token = bin2hex(random_bytes(16));
-
-            return [
-                'success' => true,
-                'token' => $token,
-                'user' => $user
-            ];
+            if ($user->hasRole('Admin')) {
+                return redirect()->route('dashboard.index')->with('success', __('Signed in'));
+            } elseif ($user->hasRole('Cashier')) {
+                return redirect()->route('sale.sales_transaction')->with('success', __('Signed in'));
+            }
         }
 
-        return [
-            'success' => false,
-            'message' => 'Invalid credentials'
-        ];
+        return redirect()->back()->with('error', __('Login details are not valid'));
     }
 
     public function logout()
     {
-        // Simulate token invalidation
-        return true;
+        Auth::logout();
     }
 }

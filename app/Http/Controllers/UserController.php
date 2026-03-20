@@ -176,13 +176,12 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $result = $this->userService->login($credentials);
-        return response()->json($result);
+        return $this->userService->login($credentials);
     }
 
     public function logout()
     {
-        $this->userService->logout();
-        return response()->json(['message' => 'Logged out successfully']);
+        $this->userService->logout(); // just logs the user out
+        return redirect('/')->with('success', 'Logged out successfully!');
     }
 }

@@ -4,26 +4,27 @@
     @include('product.partials.create_product_modal')
     @include('product.partials.update_product_modal')
 
-    <div class="flex flex-col w-full space-y-6">
+    <div class="flex flex-col w-full space-y-4 sm:space-y-6 px-4 sm:px-5">
 
         <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 
             <!-- Left Side -->
-            <div>
-                <h1 class="text-2xl font-bold text-base-content">
+            <div class="min-w-0">
+                <h1 class="text-xl sm:text-2xl font-bold text-base-content truncate">
                     Products
                 </h1>
-                <p class="text-sm text-base-content/50 mt-1">
+                <p class="text-xs sm:text-sm text-base-content/50 mt-1">
                     Manage your products, pricing, and stock levels.
                 </p>
             </div>
 
             <!-- Right Side -->
-            <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="flex items-center gap-3 w-full sm:w-auto shrink-0">
 
                 <!-- Add Button -->
                 <x-button
+                    class="w-full sm:w-auto justify-center"
                     color="primary"
                     icon="fa-solid fa-plus"
                     click="add_product"
@@ -37,7 +38,7 @@
         <div class="divider my-0"></div>
 
         <!-- Content Card -->
-        <div class="bg-base-100 border border-base-200 rounded-2xl shadow-sm p-6">
+        <div class="bg-base-100 border border-base-200 rounded-xl sm:rounded-2xl shadow-sm p-3 sm:p-6 overflow-x-auto">
             @include('product.partials.product_table')
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Sale_item;
 use App\Repositories\SaleRepository;
+use Illuminate\Support\Facades\Auth;
 
 class SaleService extends BaseService
 {
@@ -21,8 +22,7 @@ class SaleService extends BaseService
             $sale = $this->repo->create([
                 'invoice_no'     => 'INV-' . now()->format('YmdHis'),
                 'customer_id'    => $data['customer_id'],
-                // 'user_id'        => Auth::id(),
-                'user_id'        => '1',
+                'user_id'        => Auth::id(),
                 'total_amount'   => collect($data['items'])->sum(fn($i) => $i['qty'] * $i['price']),
                 'payment_method' => $data['payment_method'],
                 'payment_status' => 'paid',

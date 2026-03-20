@@ -15,6 +15,9 @@ class SaleRepository extends BaseRepository
 
     public function findAllSales()
     {
+        $todayStart = Carbon::today()->startOfDay()->toDateTimeString();
+        $todayEnd   = Carbon::today()->endOfDay()->toDateTimeString();
+
         return DB::select("
             SELECT
                 c.name,
@@ -26,15 +29,14 @@ class SaleRepository extends BaseRepository
                 s.payment_method
             FROM sales s
             LEFT JOIN customers c ON s.customer_id = c.id
-            WHERE s.created_at >= CURDATE()
-            AND s.created_at < CURDATE() + INTERVAL 1 DAY
+            WHERE s.created_at BETWEEN ? AND ?
             ORDER BY
                 CASE s.sales_status
                     WHEN 'pending' THEN 0
                     ELSE 1
                 END,
-                s.created_at DESC;
-        ");
+                s.created_at DESC
+        ", [$todayStart, $todayEnd]);
     }
 
     public function findSaleItems(int $id)

@@ -38,7 +38,7 @@
                     </p>
                 </div>
 
-                <form method="POST" action="" class="space-y-5">
+                <form method="POST" action="{{ route('user.login') }}" class="space-y-5">
                     @csrf
 
                     <!-- Email -->

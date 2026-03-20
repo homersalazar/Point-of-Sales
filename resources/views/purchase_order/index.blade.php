@@ -3,7 +3,7 @@
 @section('content')
     @include('purchase_order.partials.view_purchase_order_modal')
 
-    <div class="flex flex-col w-full space-y-6">
+    <div class="flex flex-col w-full space-y-6 p-4 sm:p-5">
 
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">

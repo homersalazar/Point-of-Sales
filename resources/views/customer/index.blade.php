@@ -4,7 +4,7 @@
     @include('customer.partials.create_customer_modal')
     @include('customer.partials.update_customer_modal')
 
-    <div class="flex flex-col w-full space-y-6">
+    <div class="flex flex-col w-full space-y-6 p-4 sm:p-5">
 
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('supplier.create_supplier_modal')
-    @include('supplier.update_supplier_modal')
+    @include('supplier.partials.create_supplier_modal')
+    @include('supplier.partials.update_supplier_modal')
 
-    <div class="flex flex-col w-full space-y-6">
+    <div class="flex flex-col w-full space-y-6 p-4 sm:p-5">
 
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">

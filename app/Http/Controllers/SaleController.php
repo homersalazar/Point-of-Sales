@@ -59,13 +59,11 @@ class SaleController extends Controller
         return response()->json($result, $result['success'] ? 200 : 500);
     }
 
-    public function sales_order(Request $request)
+    public function sales_order()
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
         $sales = $this->saleService->getAllSales();
         $status = $this->saleService->countByOrderStatus();
-        return view('sale.sales_order', compact('search', 'perPage', 'sales', 'status'));
+        return view('sale.sales_order', compact('sales', 'status'));
     }
 
     public function update(Request $request, $id)

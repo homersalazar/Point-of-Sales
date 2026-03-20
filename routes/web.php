@@ -44,7 +44,7 @@ Route::prefix('user')->group(function () {
     Route::post('/assign_permission/{id}', [UserController::class, 'assign_permission'])->name('user.assign_permission');
 
     Route::post('/login', [UserController::class, 'login'])->name('user.login');
-    Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
+    Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 });
 
 Route::prefix('product')->group(function () {

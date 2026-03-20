@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col w-full space-y-6">
+    <div class="flex flex-col w-full space-y-6 p-4 sm:p-5">
 
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-
-            <!-- Left Side -->
             <div>
                 <h1 class="text-2xl font-bold text-base-content">
                     Create Purchase Order
@@ -15,19 +13,21 @@
                     Create and manage your purchase orders efficiently.
                 </p>
             </div>
-
         </div>
 
         <!-- Divider -->
         <div class="divider my-0"></div>
 
         <!-- Content Card -->
-        <div class="bg-base-100 border border-base-200 rounded-2xl shadow-sm p-6">
+        <div class="bg-base-100 border border-base-200 rounded-2xl shadow-sm p-4 sm:p-6">
             <div class="flex flex-col gap-5 w-full">
+
                 <!-- Supplier ID -->
                 <div>
                     <label for="supplier_id" class="block text-sm font-medium text-gray-700 mb-2">Supplier ID</label>
-                    <x-select form="addPurchaseOrderForm" name="supplier_id" id="supplier_id" class="max-w-72" caption="Select Supplier" required>
+                    <x-select form="addPurchaseOrderForm" name="supplier_id" id="supplier_id"
+                        class="w-full max-w-xs sm:max-w-sm md:max-w-72"
+                        caption="Select Supplier" required>
                         @foreach ($suppliers as $supplier)
                             <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                         @endforeach
@@ -35,38 +35,51 @@
                 </div>
 
                 <!-- Product Table -->
-                <div class="relative overflow-x-auto">
+                <div class="w-full">
                     <form method="POST" id="addPurchaseOrderForm">
                         @csrf
-                        <x-table id="PurchaseOrderTable" :headers="['Product Name', 'Quantity', 'Unit', 'Unit Price', 'Subtotal', '']"></x-table>
 
-                        <div class="flex flex-col max-w-lg py-2">
-                            <div class="flex flex-row items-center w-full">
-                                <div class="relative w-full p-1">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <!-- Scrollable table wrapper -->
+                        <div class="overflow-x-auto rounded-lg border border-base-200">
+                            <x-table id="PurchaseOrderTable"
+                                :headers="['Product Name', 'Quantity', 'Unit', 'Unit Price', 'Subtotal', '']">
+                            </x-table>
+                        </div>
+
+                        <!-- Search + Submit row -->
+                        <div class="flex flex-col gap-3 mt-4 w-full">
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full">
+
+                                <!-- Search input -->
+                                <div class="relative flex-1">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                                     </div>
                                     <x-text-input
                                         type="text"
                                         id="product"
                                         name="product[]"
-                                        class="w-full md:w-[26rem] ps-10 p-2.5"
+                                        class="w-full pl-10 p-2.5"
                                         placeholder="Search Product Name"
                                         autofocus
                                         autocomplete="off"
                                     />
                                 </div>
 
-                                <x-button type="submit" color="primary">
+                                <!-- Submit button -->
+                                <x-button type="submit" color="primary" class="w-full sm:w-auto shrink-0">
                                     Submit
                                 </x-button>
-
                             </div>
-                            <div id="productLists"></div>
+
+                            <!-- Product suggestions dropdown -->
+                            <div id="productLists" class="w-full"></div>
                         </div>
+
                         <div id="formFields" style="display: none;"></div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>

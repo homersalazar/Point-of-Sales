@@ -4,7 +4,7 @@
     @include('expense.partials.create_exp_category_modal')
     @include('expense.partials.update_exp_category_modal')
 
-    <div class="flex flex-col w-full space-y-6">
+    <div class="flex flex-col w-full space-y-6 p-4 sm:p-5">
 
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
