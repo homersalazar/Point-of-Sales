@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
@@ -30,6 +31,11 @@ Route::get('/', function () {
 
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+});
+
+Route::prefix('report')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/export', [ReportController::class, 'export'])->name('report.sales.export');
 });
 
 Route::prefix('user')->group(function () {

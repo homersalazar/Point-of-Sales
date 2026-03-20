@@ -225,10 +225,10 @@
                                 <i class="fa-solid fa-chevron-down caret-icon text-base-content/30" id="caret-report"></i>
                             </div>
                             <div id="submenu-report" class="submenu closed pl-3 mt-0.5 space-y-0.5">
-                                <div class="nav-item" data-tip="Sales Report">
+                                <a href="/report" class="nav-item" data-tip="Sales Report">
                                     <i class="fa-solid fa-chart-line nav-icon" style="font-size:13px"></i>
                                     <span class="nav-label">Sales Report</span>
-                                </div>
+                                </a>
                                 <div class="nav-item" data-tip="Analytics">
                                     <i class="fa-solid fa-chart-pie nav-icon" style="font-size:13px"></i>
                                     <span class="nav-label">Analytics</span>
